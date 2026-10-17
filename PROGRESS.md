@@ -7,8 +7,8 @@
 ## 1. Project Health & Current Status
 
 * **Current Phase**: Phase 1 (Project Foundation & Mock Simulator)
-* **Next Task**: `1.2 Pydantic Financial Schemas` (ExpenseItem, DailyAuditSummary, VendorProfile)
-* **Overall Status**: 🟢 Phase 1 task 1.1 complete. All scaffolding tests passing. Ready for task 1.2.
+* **Next Task**: `1.3 Mock Telephony CLI Simulator` (`scripts/mock_call.py`)
+* **Overall Status**: 🟢 Phase 1 task 1.2 complete. All financial schemas and validation tests passing (12/12 total suite).
 * **Last Verified Date**: 2026-10-17
 
 ---
@@ -22,6 +22,7 @@
 | 2026-10-17 | Interactive Prototype | Built `demo.html` with working retro button phone simulator and live audit dashboard. |
 | 2026-10-17 | Agent Loop Framework | Established `AGENTS.md`, `ENGINEERING_PLAYBOOK.md`, `BACKLOG.md`, and `PROGRESS.md` (DeftBench methodology). |
 | 2026-10-17 | 1.1 Project Scaffolding | Established directory tree, package `__init__.py` files, `pyproject.toml`, `.env.example`, `.gitignore`, baseline `sample_history.csv`, and verified with `tests/test_scaffolding.py` (4/4 passing). |
+| 2026-10-17 | 1.2 Financial Schemas | Implemented `ExpenseItem`, `VendorProfile`, `DailyAuditSummary`, `GougingAlert`, and `CustomerCreditItem` with deterministic profit margin arithmetic and Pydantic validators in `app/agent/schemas.py`. Verified with `tests/test_schemas.py` (8/8 passing). |
 
 ---
 
@@ -45,5 +46,5 @@
 ## 5. Notes for Next Iteration
 
 > **Start next session here**:  
-> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick task `1.2 Pydantic Financial Schemas` from `BACKLOG.md`.  
-> *Goal for next session*: Implement `ExpenseItem`, `DailyAuditSummary`, and `VendorProfile` in `app/agent/schemas.py` with unit tests.
+> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick task `1.3 Mock Telephony CLI Simulator` from `BACKLOG.md`.  
+> *Goal for next session*: Implement `scripts/mock_call.py` to simulate an 8:30 PM closing call with sample dialogues.
