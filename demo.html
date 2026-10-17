@@ -60,7 +60,13 @@
         <span class="text-xs font-semibold text-amber-500 uppercase tracking-wider flex items-center gap-1.5">
           📞 Vendor's $10 Button Phone
         </span>
-        <span class="text-xs text-slate-400 font-mono">PSTN 8kHz Call</span>
+        <div class="flex items-center gap-1.5">
+          <label for="voice-lang-select" class="text-[11px] text-slate-400 font-medium">Voice:</label>
+          <select id="voice-lang-select" class="bg-slate-900 border border-slate-600 rounded px-2 py-0.5 text-[11px] text-amber-400 font-semibold focus:outline-none">
+            <option value="en" selected>🇬🇧 English</option>
+            <option value="hi">🇮🇳 Hindi</option>
+          </select>
+        </div>
       </div>
 
       <!-- Feature Phone Frame -->
@@ -327,27 +333,32 @@
       footer.innerText = "Temporal Workflow Triggered";
 
       try {
+        const langSelect = document.getElementById('voice-lang-select');
+        const chosenLang = langSelect ? langSelect.value : 'en';
+
         // Trigger real FastAPI backend simulation
         const apiPromise = fetch('/api/call/simulate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ transcript_id: 'sharmaji_closing_gouging' })
+          body: JSON.stringify({ transcript_id: 'sharmaji_closing_gouging', language: chosenLang })
         }).then(r => r.ok ? r.json() : null).catch(() => null);
 
         setTimeout(() => {
           badge.innerText = "CONNECTED";
           badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
           mainText.innerText = "ElevenLabs Voice";
-          subText.innerText = '"Namaste Uncle! Aaj ka hisaab?"';
+          subText.innerText = chosenLang === 'hi' ? '"नमस्ते शर्माजी! आज का हिसाब?"' : '"Namaste Uncle! Today\'s sales?"';
           wave.classList.remove('hidden');
-          tStatus.innerText = "Agent Speaking (Hindi)";
-          tBody.innerText = 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
+          tStatus.innerText = `Agent Speaking (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
+          tBody.innerText = chosenLang === 'hi'
+            ? 'Agent: "नमस्ते शर्माजी! दुकान बंद करने का समय हो गया। आज क्या ख़रीदा और कुल कितनी बिक्री हुई?"'
+            : 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
         }, 1200);
 
         setTimeout(() => {
           mainText.innerText = "Vendor Speaking...";
           subText.innerText = '"10L doodh, 2 tel, sabzi..."';
-          tStatus.innerText = "Vendor Voice Input (Hinglish)";
+          tStatus.innerText = "Vendor Voice Input (Hinglish/English)";
           tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
         }, 3000);
 
@@ -368,8 +379,10 @@
             footer.innerText = "Call Complete • Data Saved";
             wave.classList.remove('hidden');
 
-            tStatus.innerText = "Spoken Agent Feedback (ElevenLabs)";
-            tBody.innerText = apiData?.audit?.spoken_confirmation_en || 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Baseline is ₹850. They charged you ₹200 extra."';
+            tStatus.innerText = `Spoken Agent Feedback (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
+            tBody.innerText = chosenLang === 'hi'
+              ? (apiData?.audit?.spoken_confirmation_hi || 'Agent (ElevenLabs): "नमस्ते शर्माजी, सब दर्ज हो गया। आज का मुनाफ़ा ₹1,250 है। चेतावनी: सरसों के तेल पर ₹200 ज़्यादा लिए गए।"')
+              : (apiData?.audit?.spoken_confirmation_en || 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Baseline is ₹850. They charged you ₹200 extra."');
 
             const audit = apiData?.audit;
             const revenue = audit ? audit.revenue : 4200;

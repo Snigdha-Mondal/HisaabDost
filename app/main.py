@@ -174,9 +174,11 @@ def simulate_phone_call(req: CallSimulationRequest):
             unresolved_text=parsed_data.get("unresolved_text")
         )
 
-        # Step 4: ElevenLabs Voice Synthesis
-        with tracer.trace_span("elevenlabs.tts", "Synthesize audio response"):
-            voice_res = elevenlabs_client.synthesize(spoken_hi, language="hi")
+        # Step 4: ElevenLabs Voice Synthesis (English or Hindi based on user preference)
+        lang = req.language if req.language in ("en", "hi") else "en"
+        speech_text = spoken_en if lang == "en" else spoken_hi
+        with tracer.trace_span("elevenlabs.tts", f"Synthesize {lang} audio response"):
+            voice_res = elevenlabs_client.synthesize(speech_text, language=lang)
 
         return CallSimulationResponse(
             status="completed",

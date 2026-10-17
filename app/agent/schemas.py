@@ -100,6 +100,7 @@ class CallSimulationRequest(BaseModel):
     transcript_id: Optional[str] = None
     custom_speech: Optional[str] = None
     stall_id: Optional[str] = "STALL_004"
+    language: Optional[str] = "en"  # "en" for English, "hi" for Hindi
 
 class CallSimulationResponse(BaseModel):
     status: str

@@ -1,4 +1,3 @@
-<!-- Copied for local preview in the hisaabdost workspace -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +24,10 @@
     .wave-bar-5 { animation: wave-bar 0.7s infinite 0.25s ease-in-out; }
   </style>
 </head>
-<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 md:p-6 font-sans">
+<body class="bg-slate-900 text-slate-100 antialiased p-4 md:p-6 font-sans">
 
   <!-- Header -->
-  <header class="max-w-6xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--border)] pb-4">
+  <header class="max-w-6xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-amber-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
         ₹
@@ -36,17 +35,17 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 class="text-xl md:text-2xl font-bold tracking-tight">HisaabDost <span class="text-amber-500 font-medium text-lg">(हिसाब दोस्त)</span></h1>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-500/30">Live Prototype</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Live Prototype</span>
         </div>
-        <p class="text-xs text-[var(--muted-foreground)]">Zero-Tech Daily Phone Bookkeeper & Price-Gouging Shield for Roadside Stalls</p>
+        <p class="text-xs text-slate-400">Zero-Tech Daily Phone Bookkeeper & Price-Gouging Shield for Roadside Stalls</p>
       </div>
     </div>
 
     <!-- Stall Switcher & Status -->
     <div class="flex items-center gap-3">
       <div class="text-right hidden sm:block">
-        <p class="text-xs font-semibold text-[var(--foreground)]">Sharmaji Chai & Snacks</p>
-        <p class="text-xs text-[var(--muted-foreground)]">Stall #04 • Sector 18 Market</p>
+        <p class="text-xs font-semibold text-slate-200">Sharmaji Chai & Snacks</p>
+        <p class="text-xs text-slate-400">Stall #04 • Sector 18 Market</p>
       </div>
       <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" title="System Ready"></div>
     </div>
@@ -55,17 +54,23 @@
   <!-- Main Container: Split-Screen -->
   <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-    <!-- Left Column: The Retro Phone Simulator (4 cols) -->
-    <section class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-lg relative">
+    <!-- Left Column: The Retro Phone Simulator (5 cols) -->
+    <section class="lg:col-span-5 bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg relative">
       <div class="flex items-center justify-between mb-3">
         <span class="text-xs font-semibold text-amber-500 uppercase tracking-wider flex items-center gap-1.5">
           📞 Vendor's $10 Button Phone
         </span>
-        <span class="text-xs text-[var(--muted-foreground)] font-mono">PSTN 8kHz Call</span>
+        <div class="flex items-center gap-1.5">
+          <label for="voice-lang-select" class="text-[11px] text-slate-400 font-medium">Voice:</label>
+          <select id="voice-lang-select" class="bg-slate-900 border border-slate-600 rounded px-2 py-0.5 text-[11px] text-amber-400 font-semibold focus:outline-none">
+            <option value="en" selected>🇬🇧 English</option>
+            <option value="hi">🇮🇳 Hindi</option>
+          </select>
+        </div>
       </div>
 
       <!-- Feature Phone Frame -->
-      <div class="w-full max-w-sm mx-auto bg-slate-900 text-slate-100 rounded-3xl p-5 border-4 border-slate-700 shadow-2xl">
+      <div class="w-full max-w-sm mx-auto bg-slate-950 text-slate-100 rounded-3xl p-5 border-4 border-slate-700 shadow-2xl">
         <!-- Speaker grille -->
         <div class="flex justify-center mb-3">
           <div class="w-12 h-1 bg-slate-600 rounded-full"></div>
@@ -134,22 +139,22 @@
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">#</div>
         </div>
 
-        <!-- Microphone / Simulation Control -->
+        <!-- Simulation Control -->
         <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
           <span>Demo Audio Track:</span>
-          <button id="btn-quick-run" onclick="startSimulatedCall()" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 rounded text-white font-medium text-[11px] flex items-center gap-1 shadow">
+          <button onclick="startSimulatedCall()" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 rounded text-white font-medium text-[11px] flex items-center gap-1 shadow">
             ▶️ Run 10s Demo
           </button>
         </div>
       </div>
 
       <!-- Spoken Audio Transcript Card -->
-      <div class="mt-4 p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs">
-        <div class="flex items-center justify-between font-semibold text-[var(--muted-foreground)] mb-1">
+      <div class="mt-4 p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs">
+        <div class="flex items-center justify-between font-semibold text-slate-400 mb-1">
           <span>🗣️ Live Audio Transcript</span>
           <span id="transcript-status" class="text-[10px] text-amber-500">Waiting for call...</span>
         </div>
-        <p id="transcript-body" class="italic text-[var(--foreground)] text-xs min-h-[44px]">
+        <p id="transcript-body" class="italic text-slate-200 text-xs min-h-[44px]">
           "Press 'Call Hisaab' or dial '1' to simulate the vendor's daily closing phone call."
         </p>
       </div>
@@ -161,33 +166,33 @@
       <!-- Financial Metric Cards Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <!-- Daily Revenue -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
-          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] mb-1">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm">
+          <div class="flex justify-between items-center text-xs text-slate-400 mb-1">
             <span>REVENUE (बिक्री)</span>
-            <span class="text-emerald-500">Cash+UPI</span>
+            <span class="text-emerald-400">Cash+UPI</span>
           </div>
-          <div id="metric-revenue" class="text-2xl font-bold font-mono tracking-tight text-[var(--foreground)]">₹0.00</div>
-          <div class="text-[11px] text-[var(--muted-foreground)] mt-1">Today's total stall intake</div>
+          <div id="metric-revenue" class="text-2xl font-bold font-mono tracking-tight text-white">₹0.00</div>
+          <div class="text-[11px] text-slate-400 mt-1">Today's total stall intake</div>
         </div>
 
         <!-- Total Expenses -->
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
-          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] mb-1">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm">
+          <div class="flex justify-between items-center text-xs text-slate-400 mb-1">
             <span>EXPENSES (ख़र्चा)</span>
-            <span class="text-amber-500">Supplies</span>
+            <span class="text-amber-400">Supplies</span>
           </div>
-          <div id="metric-expenses" class="text-2xl font-bold font-mono tracking-tight text-[var(--foreground)]">₹0.00</div>
-          <div class="text-[11px] text-[var(--muted-foreground)] mt-1">3 wholesale deliveries</div>
+          <div id="metric-expenses" class="text-2xl font-bold font-mono tracking-tight text-white">₹0.00</div>
+          <div class="text-[11px] text-slate-400 mt-1">3 wholesale deliveries</div>
         </div>
 
         <!-- Net Profit -->
-        <div class="bg-[var(--card)] border-2 border-emerald-500/40 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-          <div class="flex justify-between items-center text-xs text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
+        <div class="bg-slate-800 border-2 border-emerald-500/40 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs text-emerald-400 font-semibold mb-1">
             <span>NET PROFIT (मुनाफ़ा)</span>
             <span>Take Home</span>
           </div>
-          <div id="metric-profit" class="text-2xl font-bold font-mono tracking-tight text-emerald-600 dark:text-emerald-400">₹0.00</div>
-          <div id="metric-margin" class="text-[11px] text-[var(--muted-foreground)] mt-1">Margin: --%</div>
+          <div id="metric-profit" class="text-2xl font-bold font-mono tracking-tight text-emerald-400">₹0.00</div>
+          <div id="metric-margin" class="text-[11px] text-slate-400 mt-1">Margin: --%</div>
         </div>
       </div>
 
@@ -200,15 +205,15 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h3 class="text-sm font-bold text-red-600 dark:text-red-400">
+                <h3 class="text-sm font-bold text-red-400">
                   TabPFN Anomaly: Wholesale Price Gouging Detected!
                 </h3>
                 <span class="text-[10px] px-1.5 py-0.5 rounded bg-red-600 text-white font-bold">+11.7% SPIKE</span>
               </div>
-              <p class="text-xs text-[var(--foreground)] mt-1">
+              <p class="text-xs text-slate-200 mt-1">
                 <strong>Mustard Oil (सरसों का तेल):</strong> Charged <strong>₹950.00 / can</strong> today. Historical 30-day baseline is <strong>₹850.00</strong>.
               </p>
-              <p class="text-xs text-red-600 dark:text-red-300 font-medium mt-0.5">
+              <p class="text-xs text-red-300 font-medium mt-0.5">
                 Overcharged amount: <strong>₹200.00 extra</strong> across 2 cans.
               </p>
             </div>
@@ -218,25 +223,24 @@
           </button>
         </div>
 
-        <!-- 30-Day Mini Price Trend Chart -->
-        <div class="mt-3 pt-3 border-t border-red-500/20 flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+        <div class="mt-3 pt-3 border-t border-red-500/20 flex items-center justify-between text-xs text-slate-400">
           <span>30-Day Moving Baseline: ₹850</span>
-          <span class="text-red-500 font-bold font-mono">Today: ₹950 ↑</span>
+          <span class="text-red-400 font-bold font-mono">Today: ₹950 ↑</span>
         </div>
       </div>
 
       <!-- Itemized Expense Breakdown Table -->
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-1.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
             📦 Itemized Expense Ledger (Gemma 2 Parsed)
           </h3>
-          <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-medium">Auto-Normalized</span>
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">Auto-Normalized</span>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="border-b border-[var(--border)] text-[var(--muted-foreground)] font-medium">
+            <thead class="border-b border-slate-700 text-slate-400 font-medium">
               <tr>
                 <th class="pb-2">Item Name</th>
                 <th class="pb-2 text-right">Quantity</th>
@@ -245,8 +249,8 @@
                 <th class="pb-2 text-center">Status</th>
               </tr>
             </thead>
-            <tbody id="expense-table-body" class="divide-y divide-[var(--border)]">
-              <tr class="text-[var(--muted-foreground)]">
+            <tbody id="expense-table-body" class="divide-y divide-slate-700">
+              <tr class="text-slate-400">
                 <td colspan="5" class="py-4 text-center italic">No active call. Start call to populate ledger.</td>
               </tr>
             </tbody>
@@ -255,45 +259,45 @@
       </div>
 
       <!-- Customer Credit Tabs (Udhar / Khata) -->
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-sm">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)] flex items-center gap-1.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
             📖 Customer Credit Ledger (उधार खाता)
           </h3>
-          <span class="text-xs text-[var(--muted-foreground)]">Total Pending: ₹415.00</span>
+          <span class="text-xs text-slate-400">Total Pending: ₹415.00</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <div class="p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] flex items-center justify-between">
+          <div class="p-2.5 rounded-xl border border-slate-700 bg-slate-900 flex items-center justify-between">
             <div>
               <p class="font-bold text-xs">Ramesh (Mechanic)</p>
-              <p class="text-[10px] text-[var(--muted-foreground)]">3 days pending</p>
+              <p class="text-[10px] text-slate-400">3 days pending</p>
             </div>
             <div class="text-right">
-              <p class="font-mono font-bold text-xs text-amber-500">₹110.00</p>
-              <button onclick="alert('SMS reminder sent to Ramesh: Please clear ₹110 pending at Sharmaji stall.')" class="text-[10px] text-amber-600 dark:text-amber-400 underline">Send SMS</button>
+              <p class="font-mono font-bold text-xs text-amber-400">₹110.00</p>
+              <button onclick="alert('SMS reminder sent to Ramesh: Please clear ₹110 pending at Sharmaji stall.')" class="text-[10px] text-amber-400 underline">Send SMS</button>
             </div>
           </div>
 
-          <div class="p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] flex items-center justify-between">
+          <div class="p-2.5 rounded-xl border border-slate-700 bg-slate-900 flex items-center justify-between">
             <div>
               <p class="font-bold text-xs">Sharmaji (Tailor)</p>
-              <p class="text-[10px] text-[var(--muted-foreground)]">1 day pending</p>
+              <p class="text-[10px] text-slate-400">1 day pending</p>
             </div>
             <div class="text-right">
-              <p class="font-mono font-bold text-xs text-emerald-500">₹65.00</p>
-              <button onclick="alert('Credit settled in cash.')" class="text-[10px] text-emerald-600 dark:text-emerald-400 underline">Settle</button>
+              <p class="font-mono font-bold text-xs text-emerald-400">₹65.00</p>
+              <button onclick="alert('Credit settled in cash.')" class="text-[10px] text-emerald-400 underline">Settle</button>
             </div>
           </div>
 
-          <div class="p-2.5 rounded-xl border border-red-500/30 bg-[var(--background)] flex items-center justify-between">
+          <div class="p-2.5 rounded-xl border border-red-500/30 bg-slate-900 flex items-center justify-between">
             <div>
               <p class="font-bold text-xs">Suresh (Autodriver)</p>
-              <p class="text-[10px] text-red-500 font-semibold">7 days overdue ⚠️</p>
+              <p class="text-[10px] text-red-400 font-semibold">7 days overdue ⚠️</p>
             </div>
             <div class="text-right">
-              <p class="font-mono font-bold text-xs text-red-500">₹240.00</p>
-              <button onclick="alert('Priority reminder sent to Suresh.')" class="text-[10px] text-red-500 underline font-semibold">Remind</button>
+              <p class="font-mono font-bold text-xs text-red-400">₹240.00</p>
+              <button onclick="alert('Priority reminder sent to Suresh.')" class="text-[10px] text-red-400 underline font-semibold">Remind</button>
             </div>
           </div>
         </div>
@@ -304,9 +308,6 @@
 
   <!-- Interactive Demo Script -->
   <script>
-    let callTimer = null;
-    let seconds = 0;
-
     function updateTime() {
       const now = new Date();
       document.getElementById('phone-clock').innerText = 
@@ -315,7 +316,7 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    function startSimulatedCall() {
+    async function startSimulatedCall() {
       resetCall();
       const badge = document.getElementById('screen-badge');
       const mainText = document.getElementById('screen-main-text');
@@ -325,87 +326,105 @@
       const tStatus = document.getElementById('transcript-status');
       const tBody = document.getElementById('transcript-body');
 
-      // Step 1: Connecting
       badge.innerText = "CONNECTING";
       badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-400 uppercase tracking-wider font-bold mb-1";
       mainText.innerText = "Dialing 1800-HISAAB...";
       subText.innerText = "Twilio Voice Webhook";
       footer.innerText = "Temporal Workflow Triggered";
 
-      // Step 2: Agent Speaks Greeting (after 1.5s)
-      setTimeout(() => {
-        badge.innerText = "CONNECTED";
-        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
-        mainText.innerText = "ElevenLabs Voice";
-        subText.innerText = '"Namaste Uncle! Aaj ka hisaab?"';
-        wave.classList.remove('hidden');
-        tStatus.innerText = "Agent Speaking (Hindi)";
-        tBody.innerText = 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
-      }, 1500);
+      try {
+        const langSelect = document.getElementById('voice-lang-select');
+        const chosenLang = langSelect ? langSelect.value : 'en';
 
-      // Step 3: Vendor Speaks (after 4.0s)
-      setTimeout(() => {
-        mainText.innerText = "Vendor Speaking...";
-        subText.innerText = '"10L doodh, 2 tel, sabzi..."';
-        tStatus.innerText = "Vendor Voice Input (Hinglish)";
-        tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
-      }, 4000);
+        // Trigger real FastAPI backend simulation
+        const apiPromise = fetch('/api/call/simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript_id: 'sharmaji_closing_gouging', language: chosenLang })
+        }).then(r => r.ok ? r.json() : null).catch(() => null);
 
-      // Step 4: Gemma 2 + TabPFN Auditing (after 7.0s)
-      setTimeout(() => {
-        mainText.innerText = "Gemma 2 + TabPFN";
-        subText.innerText = "Auditing unit prices...";
-        wave.classList.add('hidden');
-        tStatus.innerText = "Auditing Engine Active";
-        tBody.innerText = 'System: Extracting line items with Gemma 2... Running TabPFN tabular anomaly scan against 30-day baseline...';
-      }, 7000);
+        setTimeout(() => {
+          badge.innerText = "CONNECTED";
+          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
+          mainText.innerText = "ElevenLabs Voice";
+          subText.innerText = chosenLang === 'hi' ? '"नमस्ते शर्माजी! आज का हिसाब?"' : '"Namaste Uncle! Today\'s sales?"';
+          wave.classList.remove('hidden');
+          tStatus.innerText = `Agent Speaking (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
+          tBody.innerText = chosenLang === 'hi'
+            ? 'Agent: "नमस्ते शर्माजी! दुकान बंद करने का समय हो गया। आज क्या ख़रीदा और कुल कितनी बिक्री हुई?"'
+            : 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
+        }, 1200);
 
-      // Step 5: Finished Result & Warnings (after 9.5s)
-      setTimeout(() => {
-        badge.innerText = "AUDIT COMPLETE";
-        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
-        mainText.innerText = "Profit: ₹1,250";
-        subText.innerText = "⚠️ Oil ₹100 extra/can!";
-        footer.innerText = "Call Complete • Data Saved";
-        wave.classList.remove('hidden');
+        setTimeout(() => {
+          mainText.innerText = "Vendor Speaking...";
+          subText.innerText = '"10L doodh, 2 tel, sabzi..."';
+          tStatus.innerText = "Vendor Voice Input (Hinglish/English)";
+          tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
+        }, 3000);
 
-        tStatus.innerText = "Spoken Agent Feedback";
-        tBody.innerText = 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Last week it was ₹850. They charged you ₹200 extra."';
+        setTimeout(async () => {
+          mainText.innerText = "Gemma 2 + TabPFN";
+          subText.innerText = "Auditing unit prices...";
+          wave.classList.add('hidden');
+          tStatus.innerText = "Auditing Engine Active";
+          tBody.innerText = 'System: Extracting line items with Gemma 2... Running TabPFN tabular anomaly scan against 30-day baseline...';
 
-        // Update Dashboard Metrics
-        document.getElementById('metric-revenue').innerText = "₹4,200.00";
-        document.getElementById('metric-expenses').innerText = "₹2,950.00";
-        document.getElementById('metric-profit').innerText = "₹1,250.00";
-        document.getElementById('metric-margin').innerText = "Margin: 29.8% (Healthy)";
+          const apiData = await apiPromise;
 
-        // Reveal Gouging Alert Banner
-        document.getElementById('gouging-alert-card').classList.remove('hidden');
+          setTimeout(() => {
+            badge.innerText = "AUDIT COMPLETE";
+            badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
+            mainText.innerText = "Profit: ₹1,250";
+            subText.innerText = "⚠️ Oil ₹100 extra/can!";
+            footer.innerText = "Call Complete • Data Saved";
+            wave.classList.remove('hidden');
 
-        // Populate Expense Table
-        document.getElementById('expense-table-body').innerHTML = `
-          <tr class="hover:bg-[var(--background)] transition">
-            <td class="py-2.5 font-medium">Fresh Milk (दोध)</td>
-            <td class="py-2.5 text-right font-mono">10.0 L</td>
-            <td class="py-2.5 text-right font-mono">₹60.00</td>
-            <td class="py-2.5 text-right font-mono font-bold">₹600.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-500 font-bold">Normal</span></td>
-          </tr>
-          <tr class="hover:bg-[var(--background)] bg-red-500/5 transition">
-            <td class="py-2.5 font-medium text-red-500">Mustard Oil (सरसों तेल)</td>
-            <td class="py-2.5 text-right font-mono">2.0 Cans</td>
-            <td class="py-2.5 text-right font-mono text-red-500 font-bold">₹950.00</td>
-            <td class="py-2.5 text-right font-mono font-bold text-red-500">₹1,900.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500 text-white font-bold animate-pulse">+11.7% High</span></td>
-          </tr>
-          <tr class="hover:bg-[var(--background)] transition">
-            <td class="py-2.5 font-medium">Fresh Vegetables (सब्ज़ी)</td>
-            <td class="py-2.5 text-right font-mono">1.0 Basket</td>
-            <td class="py-2.5 text-right font-mono">₹450.00</td>
-            <td class="py-2.5 text-right font-mono font-bold">₹450.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-500 font-bold">Normal</span></td>
-          </tr>
-        `;
-      }, 9500);
+            tStatus.innerText = `Spoken Agent Feedback (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
+            tBody.innerText = chosenLang === 'hi'
+              ? (apiData?.audit?.spoken_confirmation_hi || 'Agent (ElevenLabs): "नमस्ते शर्माजी, सब दर्ज हो गया। आज का मुनाफ़ा ₹1,250 है। चेतावनी: सरसों के तेल पर ₹200 ज़्यादा लिए गए।"')
+              : (apiData?.audit?.spoken_confirmation_en || 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Baseline is ₹850. They charged you ₹200 extra."');
+
+            const audit = apiData?.audit;
+            const revenue = audit ? audit.revenue : 4200;
+            const expenses = audit ? audit.total_expenses : 2950;
+            const profit = audit ? audit.net_profit : 1250;
+            const margin = audit ? audit.profit_margin_pct : 29.8;
+
+            document.getElementById('metric-revenue').innerText = `₹${revenue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-expenses').innerText = `₹${expenses.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-profit').innerText = `₹${profit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-margin').innerText = `Margin: ${margin}% (Healthy)`;
+
+            document.getElementById('gouging-alert-card').classList.remove('hidden');
+
+            if (audit && audit.expenses && audit.expenses.length > 0) {
+              document.getElementById('expense-table-body').innerHTML = audit.expenses.map(exp => {
+                const isGouged = audit.gouging_alerts && audit.gouging_alerts.some(g => g.item.toLowerCase() === exp.item.toLowerCase());
+                return `
+                  <tr class="hover:bg-slate-700/50 ${isGouged ? 'bg-red-500/5' : ''} transition">
+                    <td class="py-2.5 font-medium ${isGouged ? 'text-red-400' : ''}">${exp.item.toUpperCase()} (${exp.raw_name})</td>
+                    <td class="py-2.5 text-right font-mono">${exp.quantity} ${exp.unit}</td>
+                    <td class="py-2.5 text-right font-mono ${isGouged ? 'text-red-400 font-bold' : ''}">₹${exp.unit_price.toFixed(2)}</td>
+                    <td class="py-2.5 text-right font-mono font-bold ${isGouged ? 'text-red-400' : ''}">₹${exp.total_cost.toFixed(2)}</td>
+                    <td class="py-2.5 text-center">
+                      ${isGouged ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500 text-white font-bold animate-pulse">+11.8% Spike</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold">Normal</span>'}
+                    </td>
+                  </tr>
+                `;
+              }).join('');
+            }
+
+            // Play audio response if available
+            if (apiData && apiData.audio_stream_url) {
+              const audio = new Audio(apiData.audio_stream_url);
+              audio.play().catch(() => {});
+            }
+          }, 1500);
+        }, 5000);
+
+      } catch (err) {
+        console.warn("Simulation error, falling back to local timer", err);
+      }
     }
 
     function resetCall() {
@@ -423,7 +442,7 @@
       document.getElementById('metric-margin').innerText = "Margin: --%";
       document.getElementById('gouging-alert-card').classList.add('hidden');
       document.getElementById('expense-table-body').innerHTML = `
-        <tr class="text-[var(--muted-foreground)]">
+        <tr class="text-slate-400">
           <td colspan="5" class="py-4 text-center italic">No active call. Start call to populate ledger.</td>
         </tr>
       `;
