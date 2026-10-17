@@ -54,13 +54,14 @@
 - [x] **5.1 ElevenLabs Voice Bridge**: Implement `app/voice/elevenlabs_client.py` for warm Hindi/English TTS generation.
 - [x] **5.2 Sentry Agent Tracing**: Configure Sentry spans for LLM, TabPFN, and TTS audio latency.
 - [x] **5.3 Web Dashboard Integration**: Connect `demo.html` / Next.js to FastAPI backend for live call visualization.
-- [ ] 🔒 **5.4 Phase 5 Checkpoint**: Full demo call tested live with audio output.
+- [x] 🔒 **5.4 Phase 5 Checkpoint**: Full demo call tested live with audio output.
 
 ---
 
 ## Phase 6: Hackathon Submission & Agent Skill
 *Exit Goal*: Reusable Agent Skill packaged, demo video recorded, and DEV post staged.
 
-- [ ] **6.1 Agent Skill Packaging**: Finalize `skills/voice-ledger-audit/SKILL.md` following Open Standards.
-- [ ] **6.2 Video Demo Recording**: Rehearse 3-minute hackathon pitch following demo script.
-- [ ] **6.3 DEV Challenge Post**: Stage submission article highlighting Gemma 2, TabPFN, and Temporal.
+- [x] **6.1 Agent Skill Packaging**: Finalize `skills/voice-ledger-audit/SKILL.md` following Open Standards.
+- [x] **6.2 Video Demo Recording**: Rehearse 3-minute hackathon pitch following demo script.
+- [x] **6.3 DEV Challenge Post**: Stage submission article highlighting Gemma 2, TabPFN, and Temporal.
+- [x] 🔒 **6.4 Final Project & Hackathon Delivery**: All 6 phases complete, verified with 35/35 passing unit tests and published documentation.

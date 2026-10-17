@@ -161,7 +161,7 @@ class GemmaParser:
         # 2. Extract Revenue / Total Sales
         revenue = 0.0
         revenue_match = re.search(
-            r'(?:total\s+)?(?:gullak|galla|scanner|bikri|kamai|sales|collection|bache\s+hain|bane)[^\d]*(\d+(?:,\d+)*(?:\.\d+)?)',
+            r'(?:total\s+)?(?:gullak|galla|galle|gallay|gulle|scanner|bikri|kamai|sales|collection|bache\s+hain|bane)[^\d]*(\d+(?:,\d+)*(?:\.\d+)?)',
             clean_text
         )
         if not revenue_match:
