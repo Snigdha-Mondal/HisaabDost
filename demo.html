@@ -310,7 +310,7 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    function startSimulatedCall() {
+    async function startSimulatedCall() {
       resetCall();
       const badge = document.getElementById('screen-badge');
       const mainText = document.getElementById('screen-main-text');
@@ -326,73 +326,92 @@
       subText.innerText = "Twilio Voice Webhook";
       footer.innerText = "Temporal Workflow Triggered";
 
-      setTimeout(() => {
-        badge.innerText = "CONNECTED";
-        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
-        mainText.innerText = "ElevenLabs Voice";
-        subText.innerText = '"Namaste Uncle! Aaj ka hisaab?"';
-        wave.classList.remove('hidden');
-        tStatus.innerText = "Agent Speaking (Hindi)";
-        tBody.innerText = 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
-      }, 1500);
+      try {
+        // Trigger real FastAPI backend simulation
+        const apiPromise = fetch('/api/call/simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript_id: 'sharmaji_closing_gouging' })
+        }).then(r => r.ok ? r.json() : null).catch(() => null);
 
-      setTimeout(() => {
-        mainText.innerText = "Vendor Speaking...";
-        subText.innerText = '"10L doodh, 2 tel, sabzi..."';
-        tStatus.innerText = "Vendor Voice Input (Hinglish)";
-        tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
-      }, 4000);
+        setTimeout(() => {
+          badge.innerText = "CONNECTED";
+          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
+          mainText.innerText = "ElevenLabs Voice";
+          subText.innerText = '"Namaste Uncle! Aaj ka hisaab?"';
+          wave.classList.remove('hidden');
+          tStatus.innerText = "Agent Speaking (Hindi)";
+          tBody.innerText = 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
+        }, 1200);
 
-      setTimeout(() => {
-        mainText.innerText = "Gemma 2 + TabPFN";
-        subText.innerText = "Auditing unit prices...";
-        wave.classList.add('hidden');
-        tStatus.innerText = "Auditing Engine Active";
-        tBody.innerText = 'System: Extracting line items with Gemma 2... Running TabPFN tabular anomaly scan against 30-day baseline...';
-      }, 7000);
+        setTimeout(() => {
+          mainText.innerText = "Vendor Speaking...";
+          subText.innerText = '"10L doodh, 2 tel, sabzi..."';
+          tStatus.innerText = "Vendor Voice Input (Hinglish)";
+          tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
+        }, 3000);
 
-      setTimeout(() => {
-        badge.innerText = "AUDIT COMPLETE";
-        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
-        mainText.innerText = "Profit: ₹1,250";
-        subText.innerText = "⚠️ Oil ₹100 extra/can!";
-        footer.innerText = "Call Complete • Data Saved";
-        wave.classList.remove('hidden');
+        setTimeout(async () => {
+          mainText.innerText = "Gemma 2 + TabPFN";
+          subText.innerText = "Auditing unit prices...";
+          wave.classList.add('hidden');
+          tStatus.innerText = "Auditing Engine Active";
+          tBody.innerText = 'System: Extracting line items with Gemma 2... Running TabPFN tabular anomaly scan against 30-day baseline...';
 
-        tStatus.innerText = "Spoken Agent Feedback";
-        tBody.innerText = 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Last week it was ₹850. They charged you ₹200 extra."';
+          const apiData = await apiPromise;
 
-        document.getElementById('metric-revenue').innerText = "₹4,200.00";
-        document.getElementById('metric-expenses').innerText = "₹2,950.00";
-        document.getElementById('metric-profit').innerText = "₹1,250.00";
-        document.getElementById('metric-margin').innerText = "Margin: 29.8% (Healthy)";
+          setTimeout(() => {
+            badge.innerText = "AUDIT COMPLETE";
+            badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
+            mainText.innerText = "Profit: ₹1,250";
+            subText.innerText = "⚠️ Oil ₹100 extra/can!";
+            footer.innerText = "Call Complete • Data Saved";
+            wave.classList.remove('hidden');
 
-        document.getElementById('gouging-alert-card').classList.remove('hidden');
+            tStatus.innerText = "Spoken Agent Feedback (ElevenLabs)";
+            tBody.innerText = apiData?.audit?.spoken_confirmation_en || 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Baseline is ₹850. They charged you ₹200 extra."';
 
-        document.getElementById('expense-table-body').innerHTML = `
-          <tr class="hover:bg-slate-700/50 transition">
-            <td class="py-2.5 font-medium">Fresh Milk (दोध)</td>
-            <td class="py-2.5 text-right font-mono">10.0 L</td>
-            <td class="py-2.5 text-right font-mono">₹60.00</td>
-            <td class="py-2.5 text-right font-mono font-bold">₹600.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold">Normal</span></td>
-          </tr>
-          <tr class="hover:bg-slate-700/50 bg-red-500/5 transition">
-            <td class="py-2.5 font-medium text-red-400">Mustard Oil (सरसों तेल)</td>
-            <td class="py-2.5 text-right font-mono">2.0 Cans</td>
-            <td class="py-2.5 text-right font-mono text-red-400 font-bold">₹950.00</td>
-            <td class="py-2.5 text-right font-mono font-bold text-red-400">₹1,900.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500 text-white font-bold animate-pulse">+11.7% High</span></td>
-          </tr>
-          <tr class="hover:bg-slate-700/50 transition">
-            <td class="py-2.5 font-medium">Fresh Vegetables (सब्ज़ी)</td>
-            <td class="py-2.5 text-right font-mono">1.0 Basket</td>
-            <td class="py-2.5 text-right font-mono">₹450.00</td>
-            <td class="py-2.5 text-right font-mono font-bold">₹450.00</td>
-            <td class="py-2.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold">Normal</span></td>
-          </tr>
-        `;
-      }, 9500);
+            const audit = apiData?.audit;
+            const revenue = audit ? audit.revenue : 4200;
+            const expenses = audit ? audit.total_expenses : 2950;
+            const profit = audit ? audit.net_profit : 1250;
+            const margin = audit ? audit.profit_margin_pct : 29.8;
+
+            document.getElementById('metric-revenue').innerText = `₹${revenue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-expenses').innerText = `₹${expenses.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-profit').innerText = `₹${profit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('metric-margin').innerText = `Margin: ${margin}% (Healthy)`;
+
+            document.getElementById('gouging-alert-card').classList.remove('hidden');
+
+            if (audit && audit.expenses && audit.expenses.length > 0) {
+              document.getElementById('expense-table-body').innerHTML = audit.expenses.map(exp => {
+                const isGouged = audit.gouging_alerts && audit.gouging_alerts.some(g => g.item.toLowerCase() === exp.item.toLowerCase());
+                return `
+                  <tr class="hover:bg-slate-700/50 ${isGouged ? 'bg-red-500/5' : ''} transition">
+                    <td class="py-2.5 font-medium ${isGouged ? 'text-red-400' : ''}">${exp.item.toUpperCase()} (${exp.raw_name})</td>
+                    <td class="py-2.5 text-right font-mono">${exp.quantity} ${exp.unit}</td>
+                    <td class="py-2.5 text-right font-mono ${isGouged ? 'text-red-400 font-bold' : ''}">₹${exp.unit_price.toFixed(2)}</td>
+                    <td class="py-2.5 text-right font-mono font-bold ${isGouged ? 'text-red-400' : ''}">₹${exp.total_cost.toFixed(2)}</td>
+                    <td class="py-2.5 text-center">
+                      ${isGouged ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500 text-white font-bold animate-pulse">+11.8% Spike</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold">Normal</span>'}
+                    </td>
+                  </tr>
+                `;
+              }).join('');
+            }
+
+            // Play audio response if available
+            if (apiData && apiData.audio_stream_url) {
+              const audio = new Audio(apiData.audio_stream_url);
+              audio.play().catch(() => {});
+            }
+          }, 1500);
+        }, 5000);
+
+      } catch (err) {
+        console.warn("Simulation error, falling back to local timer", err);
+      }
     }
 
     function resetCall() {

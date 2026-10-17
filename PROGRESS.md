@@ -6,9 +6,9 @@
 
 ## 1. Project Health & Current Status
 
-* **Current Phase**: Phase 4 (Temporal Durable Workflows)
-* **Next Task**: `🔒 4.4 Phase 4 Checkpoint` (Human review of Temporal durable orchestration, retries & escalation)
-* **Overall Status**: 🟢 Phase 4 tasks 4.1, 4.2, 4.3 complete. 28/28 unit tests passing across all test suites.
+* **Current Phase**: Phase 5 (Voice Synthesis & Caregiver Dashboard)
+* **Next Task**: `🔒 5.4 Phase 5 Checkpoint` (Human review of voice audio output, web simulator, and Sentry spans)
+* **Overall Status**: 🟢 Phase 5 tasks 5.1, 5.2, 5.3 complete. 35/35 unit tests passing across all test suites.
 * **Last Verified Date**: 2026-10-17
 
 ---
@@ -27,6 +27,7 @@
 | 2026-10-17 | 2.1-2.3 Gemma 2 Dialect Engine | Upgraded `app/agent/prompts.py` with Hindi/Hinglish street glossary and 5 few-shot scenarios. Implemented `app/agent/gemma_parser.py` supporting Ollama, Cloud API, and offline street linguistic extraction with ambiguity/unbilled safety guardrails. Verified with `tests/test_gemma_parser.py` (20/20 total tests passing). |
 | 2026-10-17 | 3.1-3.3 TabPFN Anomaly Engine | Built `app/audit/ledger_manager.py` and upgraded `app/audit/tabpfn_engine.py` with Prior Labs API support, in-context 30-day baseline distribution auditing, and penny-precise gouging mathematics. Verified with `tests/test_tabpfn_anomaly.py` (25/25 total tests passing). |
 | 2026-10-17 | 4.1-4.3 Temporal Durable Workflows | Built `app/workflows/activities.py` (call placement, audit, caregiver SMS), `app/workflows/closing_workflow.py` (`DailyClosingWorkflow` with 3-attempt backoff retry), and `app/workflows/worker.py`. Verified with `tests/test_temporal_workflow.py` (28/28 total tests passing). |
+| 2026-10-17 | 5.1-5.3 Voice, Sentry & Web App | Implemented `app/voice/elevenlabs_client.py` (bilingual TTS & synthetic audio), `app/telephony/sentry_tracer.py` (audio/LLM/TabPFN latency spans), and `app/main.py` FastAPI server wired to `demo.html` with real-time audit and audio playback. Verified with `tests/test_api_and_voice.py` (35/35 total tests passing). |
 
 ---
 
@@ -50,5 +51,5 @@
 ## 5. Notes for Next Iteration
 
 > **Start next session here**:  
-> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 4.4 Phase 4 Checkpoint` from `BACKLOG.md`.  
-> *Goal*: Product Owner reviews Temporal durable orchestration, verifies retry backoff and failure escalation, and approves transition into Phase 5 (Voice Synthesis & Caregiver Dashboard).
+> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 5.4 Phase 5 Checkpoint` from `BACKLOG.md`.  
+> *Goal*: Product Owner reviews live web simulator and audio playback, and approves transition into Phase 6 (Hackathon Submission, Agent Skill Packaging & DEV Post).
