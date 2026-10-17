@@ -32,6 +32,7 @@
 | 2026-10-17 | 6.2 Video Demo Script | Authored `docs/demo_walkthrough.md` providing a timestamped 3-minute pitch script and runbook. |
 | 2026-10-17 | 6.3 DEV Challenge Post | Staged publication-ready article in `docs/challenge_submission.md` with DevRelay session embedding tag `{% agent_session ... %}` for `#hf26challenge`. |
 | 2026-10-17 | Documentation & Polish | Created root `README.md` with Mermaid architecture diagram, badges, and quickstart run instructions. |
+| 2026-10-17 | Telephony Controls & Spoken Audio | Added prominent `CALL HISAAB` (Green) and `CUT CALL` (Red) buttons to phone simulator. Integrated native browser `window.speechSynthesis` and Web Audio API to speak financial receipts aloud through computer speakers with graceful English/Hindi OS voice detection, speaker test button (`🔊 Test Audio`), voice replay button, and instant audio cutoff on `CUT CALL`. Enhanced regex item parsing for English compound multi-item statements (*sales 1000, milk 200, eggs 150*). |
 
 ---
 
