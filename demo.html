@@ -488,6 +488,9 @@
           clearTimeout(silenceTimer);
           silenceTimer = null;
         }
+        if (recognition) {
+          try { recognition.stop(); } catch(e) {}
+        }
         executeAuditCall(text);
       }
 
@@ -504,7 +507,7 @@
         recognition = new SpeechRecognition();
         recognition.lang = chosenLang === 'hi' ? 'hi-IN' : 'en-IN';
         recognition.interimResults = true;
-        recognition.continuous = false; // Automatically triggers when speaker stops/pauses!
+        recognition.continuous = true; // Continuous listening so pauses between words do not cut the user off!
 
         let speechCaptured = '';
 
@@ -528,23 +531,25 @@
             document.getElementById('custom-speech-input').value = liveText;
             document.getElementById('screen-sub-text').innerText = `"${liveText.slice(0, 30)}..."`;
             document.getElementById('transcript-body').innerText = `Vendor: "${liveText}"`;
-          }
-        };
 
-        recognition.onspeechend = () => {
-          // Hisaab senses sentence completion!
-          console.log("Speech complete sensed by Hisaab!");
-          document.getElementById('screen-main-text').innerText = "Sentence Complete";
-          document.getElementById('screen-sub-text').innerText = "Auditing ledger with TabPFN...";
-          document.getElementById('transcript-status').innerText = "⚡ Sentence Complete — Auditing...";
-          try { recognition.stop(); } catch(e) {}
-          triggerAudit(currentSpokenSpeech.trim() || fallbackText);
+            // Debounce timer: Each new spoken word resets the 2.5-second trailing silence timer!
+            if (silenceTimer) clearTimeout(silenceTimer);
+            silenceTimer = setTimeout(() => {
+              if (isCallActive && currentSpokenSpeech) {
+                console.log("2.5s silence reached: user finished speaking sentences!");
+                document.getElementById('screen-main-text').innerText = "Sentence Complete";
+                document.getElementById('screen-sub-text').innerText = "Auditing ledger with TabPFN...";
+                document.getElementById('transcript-status').innerText = "⚡ Sentence Complete — Auditing...";
+                triggerAudit(currentSpokenSpeech);
+              }
+            }, 2500);
+          }
         };
 
         recognition.onerror = (event) => {
           console.warn("SpeechRecognition error:", event.error);
-          if (!currentSpokenSpeech) {
-            document.getElementById('transcript-status').innerText = "Mic unavailable — using input hisaab";
+          if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            document.getElementById('transcript-status').innerText = "Mic blocked — using input hisaab";
             triggerAudit(fallbackText);
           }
         };
@@ -558,14 +563,14 @@
 
         recognition.start();
 
-        // Safety timer: If vendor stays completely silent for 4.5s after connecting
+        // Initial silence timer: Gives user up to 10 seconds to start speaking after line connects
+        if (silenceTimer) clearTimeout(silenceTimer);
         silenceTimer = setTimeout(() => {
           if (isCallActive && !currentSpokenSpeech) {
-            console.log("No live voice spoken in 4.5s. Auditing with input text.");
-            try { recognition.stop(); } catch(e) {}
+            console.log("No live voice spoken in 10s. Auditing with input text.");
             triggerAudit(fallbackText);
           }
-        }, 4500);
+        }, 10000);
 
       } catch (err) {
         console.error("SpeechRecognition initialization failed:", err);
