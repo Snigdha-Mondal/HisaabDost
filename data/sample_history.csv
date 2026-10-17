@@ -1,0 +1,63 @@
+date,item_id,item,supplier_name,unit_price,quantity,unit,total_amount
+2026-09-17,ITEM_001,milk,Shyam Dairy,58.0,10.0,liters,580.0
+2026-09-17,ITEM_002,mustard oil,Kisan Traders,845.0,2.0,cans,1690.0
+2026-09-17,ITEM_003,tea leaves,Assam Tea Depot,320.0,1.5,kg,480.0
+2026-09-18,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-18,ITEM_004,sugar,Gupta Wholesale,44.0,5.0,kg,220.0
+2026-09-18,ITEM_005,vegetables,Mandi Subzi,430.0,1.0,basket,430.0
+2026-09-19,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-19,ITEM_002,mustard oil,Kisan Traders,850.0,1.0,cans,850.0
+2026-09-20,ITEM_001,milk,Shyam Dairy,59.0,12.0,liters,708.0
+2026-09-20,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0
+2026-09-21,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-21,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-09-22,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-22,ITEM_003,tea leaves,Assam Tea Depot,325.0,2.0,kg,650.0
+2026-09-23,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-23,ITEM_004,sugar,Gupta Wholesale,44.0,5.0,kg,220.0
+2026-09-24,ITEM_001,milk,Shyam Dairy,58.0,10.0,liters,580.0
+2026-09-24,ITEM_005,vegetables,Mandi Subzi,440.0,1.0,basket,440.0
+2026-09-25,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-25,ITEM_002,mustard oil,Kisan Traders,855.0,2.0,cans,1710.0
+2026-09-26,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-26,ITEM_006,commercial gas,Indane Agency,1100.0,1.0,cylinder,1100.0
+2026-09-27,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-27,ITEM_005,vegetables,Mandi Subzi,460.0,1.0,basket,460.0
+2026-09-28,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-28,ITEM_002,mustard oil,Kisan Traders,850.0,1.0,cans,850.0
+2026-09-29,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-29,ITEM_003,tea leaves,Assam Tea Depot,320.0,1.0,kg,320.0
+2026-09-30,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-09-30,ITEM_004,sugar,Gupta Wholesale,45.0,5.0,kg,225.0
+2026-10-01,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-01,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-10-02,ITEM_001,milk,Shyam Dairy,60.0,12.0,liters,720.0
+2026-10-02,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0
+2026-10-03,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-03,ITEM_002,mustard oil,Kisan Traders,845.0,2.0,cans,1690.0
+2026-10-04,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-04,ITEM_003,tea leaves,Assam Tea Depot,320.0,1.5,kg,480.0
+2026-10-05,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-05,ITEM_005,vegetables,Mandi Subzi,440.0,1.0,basket,440.0
+2026-10-06,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-06,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-10-07,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-07,ITEM_004,sugar,Gupta Wholesale,44.0,5.0,kg,220.0
+2026-10-08,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-08,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0
+2026-10-09,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-09,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-10-10,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-10,ITEM_003,tea leaves,Assam Tea Depot,320.0,2.0,kg,640.0
+2026-10-11,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-11,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0
+2026-10-12,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-12,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-10-13,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-13,ITEM_004,sugar,Gupta Wholesale,44.0,5.0,kg,220.0
+2026-10-14,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-14,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0
+2026-10-15,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-15,ITEM_002,mustard oil,Kisan Traders,850.0,2.0,cans,1700.0
+2026-10-16,ITEM_001,milk,Shyam Dairy,60.0,10.0,liters,600.0
+2026-10-16,ITEM_005,vegetables,Mandi Subzi,450.0,1.0,basket,450.0

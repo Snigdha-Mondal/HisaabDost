@@ -1,0 +1,90 @@
+[
+  {
+    "id": "sharmaji_closing_gouging",
+    "vendor_name": "Sharmaji Chai & Snacks",
+    "stall_id": "STALL_004",
+    "scenario": "Evening closing call with +11.7% supplier price gouging on mustard oil",
+    "audio_file": "sharmaji_closing_gouging.wav",
+    "spoken_text": "Haan beta, aaj ka hisaab likh lo. Doodh liya tha 10 liter 600 rupay ka. Kisan traders se 2 dabba sarson ka tel liya 1900 ka. Aur Mandi se sabzi aayi thi 450 ki. Din bhar mein gullak aur scanner mila ke total 4200 rupay ki bikri hui hai.",
+    "english_translation": "Yes son, note down today's accounts. Bought 10 liters of milk for 600 rupees. Took 2 cans of mustard oil from Kisan traders for 1900 rupees. And vegetables came from the market for 450 rupees. Overall sales today across cash register and scanner came out to 4200 rupees.",
+    "expected_extraction": {
+      "revenue": 4200.0,
+      "expenses": [
+        {
+          "item": "milk",
+          "raw_name": "doodh",
+          "quantity": 10.0,
+          "unit": "liters",
+          "total_cost": 600.0,
+          "unit_price": 60.0
+        },
+        {
+          "item": "mustard oil",
+          "raw_name": "sarson ka tel",
+          "quantity": 2.0,
+          "unit": "cans",
+          "total_cost": 1900.0,
+          "unit_price": 950.0
+        },
+        {
+          "item": "vegetables",
+          "raw_name": "sabzi",
+          "quantity": 1.0,
+          "unit": "basket",
+          "total_cost": 450.0,
+          "unit_price": 450.0
+        }
+      ],
+      "total_expenses": 2950.0,
+      "net_profit": 1250.0
+    },
+    "expected_gouging": {
+      "item": "mustard oil",
+      "baseline_price": 850.0,
+      "current_price": 950.0,
+      "pct_increase": 11.7,
+      "extra_cost": 200.0
+    }
+  },
+  {
+    "id": "sharmaji_closing_normal",
+    "vendor_name": "Sharmaji Chai & Snacks",
+    "stall_id": "STALL_004",
+    "scenario": "Standard routine day with normal market prices",
+    "audio_file": "sharmaji_closing_normal.wav",
+    "spoken_text": "Namaste, aaj 12 liter doodh liya tha 720 ka, chai patti aayi 1 kilo 320 rupaye, aur 5 kilo cheeni 220 rupaye ki. Aaj gullek mein total bikri 3800 rupaye hui hai.",
+    "english_translation": "Greetings, today took 12 liters of milk for 720 rupees, tea leaves arrived 1 kg for 320 rupees, and 5 kg sugar for 220 rupees. Total sales in the cash box today was 3800 rupees.",
+    "expected_extraction": {
+      "revenue": 3800.0,
+      "expenses": [
+        {
+          "item": "milk",
+          "raw_name": "doodh",
+          "quantity": 12.0,
+          "unit": "liters",
+          "total_cost": 720.0,
+          "unit_price": 60.0
+        },
+        {
+          "item": "tea leaves",
+          "raw_name": "chai patti",
+          "quantity": 1.0,
+          "unit": "kg",
+          "total_cost": 320.0,
+          "unit_price": 320.0
+        },
+        {
+          "item": "sugar",
+          "raw_name": "cheeni",
+          "quantity": 5.0,
+          "unit": "kg",
+          "total_cost": 220.0,
+          "unit_price": 44.0
+        }
+      ],
+      "total_expenses": 1260.0,
+      "net_profit": 2540.0
+    },
+    "expected_gouging": null
+  }
+]

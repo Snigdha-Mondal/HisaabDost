@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hisaabdost"
+version = "0.1.0"
+description = "Zero-tech, voice-first daily bookkeeper and price-gouging shield for roadside food stalls using Gemma 2, TabPFN, and Temporal."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "HisaabDost Contributors" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "pydantic>=2.7.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "python-dotenv>=1.0.1",
+    "requests>=2.31.0",
+    "jinja2>=3.1.3",
+    "httpx>=0.27.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.1.0",
+    "pytest-asyncio>=0.23.5",
+    "black>=24.3.0",
+    "ruff>=0.3.4"
+]
+temporal = [
+    "temporalio>=1.6.0"
+]
+sentry = [
+    "sentry-sdk>=2.0.0"
+]
+database = [
+    "psycopg2-binary>=2.9.9",
+    "pymongo>=4.6.0"
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
