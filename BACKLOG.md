@@ -34,16 +34,16 @@
 - [x] **3.1 Baseline Dataset**: Create `data/sample_history.csv` containing 30 days of tea stall purchase logs.
 - [x] **3.2 TabPFN Anomaly Detector**: Implement `app/audit/tabpfn_engine.py` to compare new unit prices against moving average.
 - [x] **3.3 Anomaly Unit Tests**: Implement `tests/test_tabpfn_anomaly.py` verifying oil and milk price spike flags.
-- [ ] 🔒 **3.4 Phase 3 Checkpoint**: Verify mathematical calculations (extra rupee overcharge) are 100% accurate.
+- [x] 🔒 **3.4 Phase 3 Checkpoint**: Verify mathematical calculations (extra rupee overcharge) are 100% accurate.
 
 ---
 
 ## Phase 4: Temporal Durable Workflows
 *Exit Goal*: Daily closing call scheduled, with 15-minute retry on busy line and state persistence.
 
-- [ ] **4.1 Workflow Definition**: Implement `DailyClosingWorkflow` in `app/workflows/closing_workflow.py`.
-- [ ] **4.2 Activities Implementation**: Implement activities for call placement, parsing, audit, and SMS dispatch in `app/workflows/activities.py`.
-- [ ] **4.3 Telephony Failure Simulation**: Test workflow behavior when the vendor line is busy or unanswered.
+- [x] **4.1 Workflow Definition**: Implement `DailyClosingWorkflow` in `app/workflows/closing_workflow.py`.
+- [x] **4.2 Activities Implementation**: Implement activities for call placement, parsing, audit, and SMS dispatch in `app/workflows/activities.py`.
+- [x] **4.3 Telephony Failure Simulation**: Test workflow behavior when the vendor line is busy or unanswered.
 - [ ] 🔒 **4.4 Phase 4 Checkpoint**: Verify Temporal UI shows clean execution history and retry backoffs.
 
 ---

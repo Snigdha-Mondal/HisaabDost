@@ -6,9 +6,9 @@
 
 ## 1. Project Health & Current Status
 
-* **Current Phase**: Phase 3 (TabPFN Price-Gouging Anomaly Engine)
-* **Next Task**: `🔒 3.4 Phase 3 Checkpoint` (Human review of mathematical calculations and anomaly thresholds)
-* **Overall Status**: 🟢 Phase 3 tasks 3.1, 3.2, 3.3 complete. 25/25 unit tests passing across all test suites.
+* **Current Phase**: Phase 4 (Temporal Durable Workflows)
+* **Next Task**: `🔒 4.4 Phase 4 Checkpoint` (Human review of Temporal durable orchestration, retries & escalation)
+* **Overall Status**: 🟢 Phase 4 tasks 4.1, 4.2, 4.3 complete. 28/28 unit tests passing across all test suites.
 * **Last Verified Date**: 2026-10-17
 
 ---
@@ -26,6 +26,7 @@
 | 2026-10-17 | 1.3 Mock Telephony CLI | Built `scripts/mock_call.py` telephony CLI simulator with Gemma 2 speech parsing, TabPFN price gouging auditing, ASCII receipt printing, and ElevenLabs voice response scripts. Verified with `tests/test_mock_call.py` (15/15 total tests passing). |
 | 2026-10-17 | 2.1-2.3 Gemma 2 Dialect Engine | Upgraded `app/agent/prompts.py` with Hindi/Hinglish street glossary and 5 few-shot scenarios. Implemented `app/agent/gemma_parser.py` supporting Ollama, Cloud API, and offline street linguistic extraction with ambiguity/unbilled safety guardrails. Verified with `tests/test_gemma_parser.py` (20/20 total tests passing). |
 | 2026-10-17 | 3.1-3.3 TabPFN Anomaly Engine | Built `app/audit/ledger_manager.py` and upgraded `app/audit/tabpfn_engine.py` with Prior Labs API support, in-context 30-day baseline distribution auditing, and penny-precise gouging mathematics. Verified with `tests/test_tabpfn_anomaly.py` (25/25 total tests passing). |
+| 2026-10-17 | 4.1-4.3 Temporal Durable Workflows | Built `app/workflows/activities.py` (call placement, audit, caregiver SMS), `app/workflows/closing_workflow.py` (`DailyClosingWorkflow` with 3-attempt backoff retry), and `app/workflows/worker.py`. Verified with `tests/test_temporal_workflow.py` (28/28 total tests passing). |
 
 ---
 
@@ -49,5 +50,5 @@
 ## 5. Notes for Next Iteration
 
 > **Start next session here**:  
-> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 3.4 Phase 3 Checkpoint` from `BACKLOG.md`.  
-> *Goal*: Product Owner reviews TabPFN price gouging anomaly calculations and approves transition into Phase 4 (Temporal Durable Workflows).
+> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 4.4 Phase 4 Checkpoint` from `BACKLOG.md`.  
+> *Goal*: Product Owner reviews Temporal durable orchestration, verifies retry backoff and failure escalation, and approves transition into Phase 5 (Voice Synthesis & Caregiver Dashboard).
