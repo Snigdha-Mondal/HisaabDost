@@ -4,7 +4,7 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python: 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Tests: 35 Passed](https://img.shields.io/badge/tests-35%20passed-brightgreen.svg)](tests/)
+[![Tests: 37 Passed](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](tests/)
 [![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest-2026%20Week%202-orange.svg)](https://dev.to)
 [![Prior Labs TabPFN](https://img.shields.io/badge/Audit-TabPFN--3.5-blueviolet.svg)](https://priorlabs.ai)
 [![Temporal Workflows](https://img.shields.io/badge/Workflow-Temporal.io-black.svg)](https://temporal.io)
@@ -28,47 +28,39 @@ Within seconds, HisaabDost:
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ High-Level Architecture
 
-```mermaid
-flowchart TD
-    subgraph Street_PSTN ["📞 Street Reality (Zero Tech)"]
-        Vendor["Elderly Stall Owner<br/>($10 Button Phone)"]
-    end
-
-    subgraph Temporal_Cloud ["🔄 Durable Orchestration"]
-        Workflow["DailyClosingWorkflow<br/>(8:30 PM Schedule)"]
-        Retry["15-Min Exponential<br/>Retry Backoff Saga"]
-        Workflow --> Retry
-    end
-
-    subgraph Intelligence_Core ["⚡ HisaabDost AI Pipeline"]
-        Gemma["Gemma 2 (2B / 9B)<br/>Colloquial Dialect Extractor"]
-        Ledger["30-Day Historical<br/>Wholesale CSV Ledger"]
-        TabPFN["TabPFN-3.5 (Prior Labs)<br/>In-Context Tabular Auditor"]
-        Math["Deterministic Python<br/>Financial Math Engine"]
-        TTS["ElevenLabs Bilingual<br/>Elder-Friendly Audio"]
-    end
-
-    subgraph Web_Caregiver ["💻 Caregiver & Family Dashboard"]
-        FastAPI["FastAPI Backend<br/>(Port 8000)"]
-        Simulator["Retro Button Phone<br/>Browser Call Simulator"]
-        Tracer["Sentry Latency Spans<br/>(<50ms Total)"]
-        Alert["Caregiver SMS / WhatsApp<br/>(Itemized Receipt)"]
-    end
-
-    Workflow -->|Outbound PSTN Call| Vendor
-    Vendor -->|Street Hindi/Hinglish Voice| Gemma
-    Gemma -->|Structured JSON| Math
-    Gemma -->|Extracted Commodities| TabPFN
-    Ledger -->|30-Day Baselines| TabPFN
-    TabPFN -->|Price Spikes & Overcharge ₹| Math
-    Math -->|Receipt Summary| TTS
-    TTS -->|Spoken Response| Vendor
-    Math -->|Atomic Event| FastAPI
-    FastAPI --> Simulator
-    FastAPI --> Tracer
-    FastAPI --> Alert
+```text
+┌──────────────────────────────────────┐
+│  Elderly Vendor (Basic Button Phone) │
+└──────────────────┬───────────────────┘
+                   │ 8kHz PSTN Voice
+                   ▼
+┌──────────────────────────────────────┐
+│       Twilio Telephony Gateway       │
+└──────────────────┬───────────────────┘
+                   │ Audio Stream / Webhook
+                   ▼
+┌──────────────────────────────────────┐
+│      Temporal Workflow Engine        │  Durable schedules, 15m retry loops
+└──────┬───────────┬───────────┬───────┘
+       │           │           │
+       ▼           ▼           ▼
+┌──────────────┐ ┌───────────┐ ┌──────────────┐
+│   Gemma 2    │ │TabPFN-3.5 │ │ Ledger Store │
+│ Entity Parser│ │Price Audit│ │ (Historical) │
+└──────┬───────┘ └─────┬─────┘ └──────────────┘
+       │               │
+       └───────┬───────┘
+               ▼
+┌──────────────────────────────────────┐
+│   ElevenLabs Voice Response Stream   │  Warm, patient, Hindi/English persona
+└──────────────────┬───────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────┐
+│  Caregiver SMS Alert / Web Dashboard │  Sentry agent tracing & observability
+└──────────────────────────────────────┘
 ```
 
 ---
