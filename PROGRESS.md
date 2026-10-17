@@ -8,8 +8,8 @@
 
 * **Current Phase**: Phase 6 Complete (Hackathon Submission & Agent Skill)
 * **Next Task**: Project Complete & Shipped! 🚀
-* **Overall Status**: 🟢 All 6 Phases complete. 35/35 unit tests passing across all test suites in ~0.2s. Reusable Agent Skill verified. Ready for Hacktoberfest 2026 Week 2 submission.
-* **Last Verified Date**: 2026-10-17
+* **Overall Status**: 🟢 All 6 Phases complete. 37/37 unit tests passing across all test suites in ~0.3s. Spoken number normalizer and flexible clause ordering verified live. Reusable Agent Skill verified. Ready for Hacktoberfest 2026 Week 2 submission.
+* **Last Verified Date**: 2026-10-18
 
 ---
 
@@ -33,6 +33,7 @@
 | 2026-10-17 | 6.3 DEV Challenge Post | Staged publication-ready article in `docs/challenge_submission.md` with DevRelay session embedding tag `{% agent_session ... %}` for `#hf26challenge`. |
 | 2026-10-17 | Documentation & Polish | Created root `README.md` with Mermaid architecture diagram, badges, and quickstart run instructions. |
 | 2026-10-17 | Telephony Controls & Spoken Audio | Unified live speech directly into the green `CALL HISAAB` button. Clicking Call dials 1800-HISAAB, answers line, and captures microphone speech continuously (`continuous = true`). Replaced aggressive native speech cutoff with a 2.5-second trailing silence debounce window so natural pauses mid-sentence do not trigger premature audits. Audits prices with TabPFN and speaks back confirmation aloud. Removed the separate microphone button completely. |
+| 2026-10-18 | Spoken Number & Clause Order Fixes | Fixed number word parsing ("three hundred seventy five" -> 375, "two hundred" -> 200) and STT acoustic concatenation artifacts (`30075` -> 375, `300 75` -> 375). Fixed clause inversion where expenses were spoken before sales ("i bought milk for 200 and my sales were 500"); revenue is blanked out upon extraction to prevent cross-contaminating expense costs, correctly reporting Revenue: ₹500, Expenses: ₹200, Profit: +₹300. Added 2 unit test methods in `tests/test_gemma_parser.py` (37/37 passing). |
 
 ---
 

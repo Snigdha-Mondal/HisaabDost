@@ -92,5 +92,56 @@ class TestGemmaParserDialects(unittest.TestCase):
         self.assertIn("milk", items)
         self.assertNotIn("mustard oil", items)
 
+    def test_spoken_number_words_and_stt_artifacts(self):
+        # 1. Spoken English words
+        res1 = gemma_parser.parse_speech("my sales were three hundred seventy five rupees")
+        self.assertEqual(res1["revenue"], 375.0)
+        self.assertEqual(res1["total_expenses"], 0.0)
+        self.assertEqual(res1["net_profit"], 375.0)
+
+        # 2. STT acoustic concatenation artifact (300 + 75 -> 30075)
+        res2 = gemma_parser.parse_speech("my sales were 30075 rupees")
+        self.assertEqual(res2["revenue"], 375.0)
+        self.assertEqual(res2["net_profit"], 375.0)
+
+        # 3. STT spaced numbers (300 + 75 -> 375)
+        res3 = gemma_parser.parse_speech("my sales were 300 75 rupees")
+        self.assertEqual(res3["revenue"], 375.0)
+        self.assertEqual(res3["net_profit"], 375.0)
+
+        # 4. Spoken Hindi number words
+        res4 = gemma_parser.parse_speech("meri bikri teen sau pachattar rupaye thi")
+        self.assertEqual(res4["revenue"], 375.0)
+        self.assertEqual(res4["net_profit"], 375.0)
+
+    def test_flexible_clause_ordering_expenses_before_revenue(self):
+        # 1. Expenses mentioned BEFORE sales: "i bought milk for 200 and my sales were 500"
+        res1 = gemma_parser.parse_speech("i bought milk for 200 and my sales were 500")
+        self.assertEqual(res1["revenue"], 500.0)
+        self.assertEqual(res1["total_expenses"], 200.0)
+        self.assertEqual(res1["net_profit"], 300.0)
+        items1 = {e["item"]: e for e in res1["expenses"]}
+        self.assertIn("milk", items1)
+        self.assertEqual(items1["milk"]["total_cost"], 200.0)
+
+        # 2. Spoken number words with expenses first: "i bought milk for two hundred and my sales were five hundred"
+        res2 = gemma_parser.parse_speech("i bought milk for two hundred and my sales were five hundred")
+        self.assertEqual(res2["revenue"], 500.0)
+        self.assertEqual(res2["total_expenses"], 200.0)
+        self.assertEqual(res2["net_profit"], 300.0)
+
+        # 3. Reverse order sales syntax: "i bought milk for 200 and 500 in sales"
+        res3 = gemma_parser.parse_speech("i bought milk for 200 and 500 in sales")
+        self.assertEqual(res3["revenue"], 500.0)
+        self.assertEqual(res3["total_expenses"], 200.0)
+        self.assertEqual(res3["net_profit"], 300.0)
+
+        # 4. Hindi colloquial expenses before revenue
+        res4 = gemma_parser.parse_speech("doodh liya do sau ka aur meri bikri paanch sau thi")
+        self.assertEqual(res4["revenue"], 500.0)
+        self.assertEqual(res4["total_expenses"], 200.0)
+        self.assertEqual(res4["net_profit"], 300.0)
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -516,16 +516,22 @@
         };
 
         recognition.onresult = (event) => {
+          let finalTranscript = '';
           let interim = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
+          for (let i = 0; i < event.results.length; ++i) {
             const transcriptChunk = event.results[i][0].transcript;
             if (event.results[i].isFinal) {
-              speechCaptured += transcriptChunk + ' ';
+              finalTranscript += transcriptChunk + ' ';
             } else {
               interim += transcriptChunk;
             }
           }
-          const liveText = (speechCaptured + interim).trim();
+          let liveText = (finalTranscript + interim).trim();
+          // Clean STT artifacts like '30075' -> '375', '300 75' -> '375'
+          liveText = liveText.replace(/\b([1-9])00([1-9]\d)\b/g, '$1$2')
+                             .replace(/\b([1-9])00([1-9])\b/g, '$10$2')
+                             .replace(/\b([1-9]\d*00)\s+([1-9]\d?)\b/g, (m, a, b) => String(parseInt(a) + parseInt(b)));
+
           if (liveText) {
             currentSpokenSpeech = liveText;
             document.getElementById('custom-speech-input').value = liveText;
