@@ -6,9 +6,9 @@
 
 ## 1. Project Health & Current Status
 
-* **Current Phase**: Phase 1 (Project Foundation & Mock Simulator)
-* **Next Task**: `🔒 1.4 Phase 1 Checkpoint` (Human review of mock runner end-to-end execution)
-* **Overall Status**: 🟢 Phase 1 tasks 1.1, 1.2, 1.3 complete. Telephony CLI simulator running end-to-end with 15/15 unit tests passing.
+* **Current Phase**: Phase 2 (Gemma 2 Colloquial Entity Extraction Engine)
+* **Next Task**: `🔒 2.4 Phase 2 Checkpoint` (Human review of parser accuracy, dialect support & currency safety)
+* **Overall Status**: 🟢 Phase 2 tasks 2.1, 2.2, 2.3 complete. 20/20 unit tests passing across all test suites.
 * **Last Verified Date**: 2026-10-17
 
 ---
@@ -24,6 +24,7 @@
 | 2026-10-17 | 1.1 Project Scaffolding | Established directory tree, package `__init__.py` files, `pyproject.toml`, `.env.example`, `.gitignore`, baseline `sample_history.csv`, and verified with `tests/test_scaffolding.py` (4/4 passing). |
 | 2026-10-17 | 1.2 Financial Schemas | Implemented `ExpenseItem`, `VendorProfile`, `DailyAuditSummary`, `GougingAlert`, and `CustomerCreditItem` with deterministic profit margin arithmetic and Pydantic validators in `app/agent/schemas.py`. Verified with `tests/test_schemas.py` (8/8 passing). |
 | 2026-10-17 | 1.3 Mock Telephony CLI | Built `scripts/mock_call.py` telephony CLI simulator with Gemma 2 speech parsing, TabPFN price gouging auditing, ASCII receipt printing, and ElevenLabs voice response scripts. Verified with `tests/test_mock_call.py` (15/15 total tests passing). |
+| 2026-10-17 | 2.1-2.3 Gemma 2 Dialect Engine | Upgraded `app/agent/prompts.py` with Hindi/Hinglish street glossary and 5 few-shot scenarios. Implemented `app/agent/gemma_parser.py` supporting Ollama, Cloud API, and offline street linguistic extraction with ambiguity/unbilled safety guardrails. Verified with `tests/test_gemma_parser.py` (20/20 total tests passing). |
 
 ---
 
@@ -47,5 +48,5 @@
 ## 5. Notes for Next Iteration
 
 > **Start next session here**:  
-> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 1.4 Phase 1 Checkpoint` from `BACKLOG.md`.  
-> *Goal*: Product Owner reviews mock call CLI execution and approves transition into Phase 2 (Gemma 2 Entity Extraction Engine).
+> Read `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ pick `🔒 2.4 Phase 2 Checkpoint` from `BACKLOG.md`.  
+> *Goal*: Product Owner reviews Gemma 2 entity parser performance across street food dialects, verifies currency safety, and approves transition into Phase 3 (TabPFN Price-Gouging Anomaly Engine).

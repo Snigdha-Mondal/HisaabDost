@@ -14,16 +14,16 @@
 - [x] **1.1 Project Scaffolding**: Setup `pyproject.toml`, directory tree, `.env.example`, and `.gitignore`.
 - [x] **1.2 Pydantic Financial Schemas**: Implement `ExpenseItem`, `DailyAuditSummary`, and `VendorProfile` in `app/agent/schemas.py`.
 - [x] **1.3 Mock Telephony CLI Simulator**: Create `scripts/mock_call.py` allowing developers to simulate an 8:30 PM vendor phone call from the terminal.
-- [ ] 🔒 **1.4 Phase 1 Checkpoint**: Verify mock runner prints structured input/output end-to-end.
+- [x] 🔒 **1.4 Phase 1 Checkpoint**: Verify mock runner prints structured input/output end-to-end.
 
 ---
 
 ## Phase 2: Gemma 2 Colloquial Entity Extraction Engine
 *Exit Goal*: Raw spoken transcripts (Hindi, Hinglish, English) parsed into strict financial JSON.
 
-- [ ] **2.1 Prompt Engineering**: Create few-shot prompt in `app/agent/prompts.py` supporting Indian street slang ("dabba", "liter", "kilo", "galla").
-- [ ] **2.2 Gemma 2 Adapter**: Implement `app/agent/gemma_parser.py` using Ollama / HuggingFace / Gemini API fallback.
-- [ ] **2.3 Dialect Unit Tests**: Implement `tests/test_gemma_parser.py` with 5 authentic street vendor test audio transcripts.
+- [x] **2.1 Prompt Engineering**: Create few-shot prompt in `app/agent/prompts.py` supporting Indian street slang ("dabba", "liter", "kilo", "galla").
+- [x] **2.2 Gemma 2 Adapter**: Implement `app/agent/gemma_parser.py` using Ollama / HuggingFace / Gemini API fallback.
+- [x] **2.3 Dialect Unit Tests**: Implement `tests/test_gemma_parser.py` with 5 authentic street vendor test audio transcripts.
 - [ ] 🔒 **2.4 Phase 2 Checkpoint**: Review parser accuracy and currency safety.
 
 ---
