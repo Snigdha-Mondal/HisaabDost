@@ -122,22 +122,15 @@
             <span class="text-2xl group-hover:scale-110 transition-transform">📞</span>
             <div class="text-left">
               <div class="text-xs uppercase tracking-wider font-extrabold leading-tight">CALL HISAAB</div>
-              <div class="text-[10px] text-emerald-100 font-normal">Connect Call</div>
+              <div class="text-[10px] text-emerald-100 font-normal">Dial & Speak</div>
             </div>
           </button>
           <button id="btn-cut" onclick="cutCall()" class="bg-gradient-to-r from-rose-700 to-rose-600 hover:from-rose-600 hover:to-rose-500 active:scale-95 transition-all text-white py-3.5 px-3 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-rose-950/50 border border-rose-400/40 text-sm group">
             <span class="text-2xl group-hover:scale-110 transition-transform">📵</span>
             <div class="text-left">
               <div class="text-xs uppercase tracking-wider font-extrabold leading-tight">CUT CALL</div>
-              <div class="text-[10px] text-rose-100 font-normal">Disconnect</div>
+              <div class="text-[10px] text-rose-100 font-normal">Hang Up Line</div>
             </div>
-          </button>
-        </div>
-
-        <!-- Microphone Voice Dictation Button -->
-        <div class="mt-2.5">
-          <button id="btn-mic" onclick="toggleMicrophone()" class="w-full py-2.5 bg-amber-500/15 hover:bg-amber-500/25 active:scale-95 transition text-amber-300 font-bold rounded-xl border border-amber-500/50 shadow-md flex items-center justify-center gap-2 text-xs">
-            <span id="mic-icon" class="text-base">🎙️</span> <span id="mic-label">Click Here to Speak via Microphone</span>
           </button>
         </div>
 
@@ -409,9 +402,18 @@
         : '"HisaabDost will now speak in English. Press CALL HISAAB to place a call."';
     }
 
+    let isCallActive = false;
+    let silenceTimer = null;
+    let currentSpokenSpeech = '';
+
     function startCall() {
-      // 1. Prime speech synthesis & play dial chime immediately on click gesture
-      playAudioChime(440, 0.15);
+      // If already active, don't restart
+      if (isCallActive) return;
+      isCallActive = true;
+      currentSpokenSpeech = '';
+
+      // 1. Prime browser speech synthesis & play dial tone immediately
+      playAudioChime(440, 0.2);
       if ('speechSynthesis' in window) {
         window.speechSynthesis.resume();
         const primeUtterance = new SpeechSynthesisUtterance(' ');
@@ -419,12 +421,139 @@
         window.speechSynthesis.speak(primeUtterance);
       }
 
-      const text = document.getElementById('custom-speech-input').value.trim();
-      const speechToUse = text || "my sales were 1000 rupees and i bought milk for 200 and eggs for 150.";
-      executeAuditCall(speechToUse);
+      const badge = document.getElementById('screen-badge');
+      const mainText = document.getElementById('screen-main-text');
+      const subText = document.getElementById('screen-sub-text');
+      const footer = document.getElementById('screen-footer');
+      const wave = document.getElementById('audio-wave');
+      const tStatus = document.getElementById('transcript-status');
+      const tBody = document.getElementById('transcript-body');
+
+      const langSelect = document.getElementById('voice-lang-select');
+      const chosenLang = langSelect ? langSelect.value : 'en';
+
+      // Phase 1: Dialing
+      badge.innerText = "DIALING...";
+      badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-400 uppercase tracking-wider font-bold mb-1 animate-pulse";
+      mainText.innerText = "Dialing 1800-HISAAB...";
+      subText.innerText = "Connecting PSTN 8kHz line";
+      footer.innerText = "Daily closing call initiated...";
+      wave.classList.add('hidden');
+
+      tStatus.innerText = "Dialing 1800-HISAAB...";
+      tBody.innerText = `"Connecting daily closing call at 20:30 IST..."`;
+
+      // Phase 2: Call Answers after 650ms, microphone opens automatically
+      setTimeout(() => {
+        if (!isCallActive) return; // User hung up while dialing
+
+        playAudioChime(587.33, 0.2); // Line connected chime
+        badge.innerText = "IN CALL 📞";
+        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
+        mainText.innerText = "🎙️ Speak Your Hisaab...";
+        subText.innerText = "Listening to your voice...";
+        footer.innerText = "Hisaab will sense when you finish";
+        wave.classList.remove('hidden');
+
+        tStatus.innerText = "🔴 Line Connected • Microphone Listening";
+        tBody.innerText = chosenLang === 'hi'
+          ? '"कॉल जुड़ गई! अपनी आज की बिक्री और ख़र्चे बोलिए (उदा. 'बिक्री 1000 रुपये, दूध 200 और अंडे 150'). हिसाब दोस्त अपने आप वाक्य पूरा होते ही समझ जाएगा।"'
+          : '"Call connected! Speak your sales and expenses into your mic (e.g. \'my sales were 1000 rupees and i bought milk for 200 and eggs for 150\'). Hisaab will sense when you pause."';
+
+        startLiveVoiceRecognition(chosenLang);
+      }, 650);
+    }
+
+    function startLiveVoiceRecognition(chosenLang) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const fallbackText = document.getElementById('custom-speech-input').value.trim() || 
+        "my sales were 1000 rupees and i bought milk for 200 and eggs for 150.";
+
+      if (!SpeechRecognition) {
+        console.warn("SpeechRecognition API not available in browser. Using prepared text fallback.");
+        document.getElementById('transcript-status').innerText = "Using Prepared Dialect (No Browser Mic API)";
+        setTimeout(() => {
+          if (isCallActive) executeAuditCall(fallbackText);
+        }, 1500);
+        return;
+      }
+
+      try {
+        recognition = new SpeechRecognition();
+        recognition.lang = chosenLang === 'hi' ? 'hi-IN' : 'en-IN';
+        recognition.interimResults = true;
+        recognition.continuous = false; // Automatically triggers when speaker stops/pauses!
+
+        let speechCaptured = '';
+
+        recognition.onstart = () => {
+          console.log("Phone microphone connected and listening.");
+        };
+
+        recognition.onresult = (event) => {
+          let interim = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            const transcriptChunk = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              speechCaptured += transcriptChunk + ' ';
+            } else {
+              interim += transcriptChunk;
+            }
+          }
+          const liveText = (speechCaptured + interim).trim();
+          if (liveText) {
+            currentSpokenSpeech = liveText;
+            document.getElementById('custom-speech-input').value = liveText;
+            document.getElementById('screen-sub-text').innerText = `"${liveText.slice(0, 30)}..."`;
+            document.getElementById('transcript-body').innerText = `Vendor: "${liveText}"`;
+          }
+        };
+
+        recognition.onspeechend = () => {
+          // Hisaab senses sentence completion!
+          console.log("Speech complete sensed by Hisaab!");
+          document.getElementById('screen-main-text').innerText = "Sentence Complete";
+          document.getElementById('screen-sub-text').innerText = "Auditing ledger with TabPFN...";
+          document.getElementById('transcript-status').innerText = "⚡ Sentence Complete — Auditing...";
+          try { recognition.stop(); } catch(e) {}
+        };
+
+        recognition.onerror = (event) => {
+          console.warn("SpeechRecognition error:", event.error);
+        };
+
+        recognition.onend = () => {
+          if (!isCallActive) return; // Call was cut
+          console.log("Recognition closed. Auditing speech:", currentSpokenSpeech);
+          const textToAudit = currentSpokenSpeech.trim() || document.getElementById('custom-speech-input').value.trim() || fallbackText;
+          executeAuditCall(textToAudit);
+        };
+
+        recognition.start();
+
+        // Safety timer: If vendor stays completely silent for 9s after connecting
+        silenceTimer = setTimeout(() => {
+          if (isCallActive && !currentSpokenSpeech) {
+            console.log("No speech heard in 9s, auditing with input text.");
+            try { recognition.stop(); } catch(e) {}
+          }
+        }, 9000);
+
+      } catch (err) {
+        console.error("SpeechRecognition initialization failed:", err);
+        setTimeout(() => {
+          if (isCallActive) executeAuditCall(fallbackText);
+        }, 1000);
+      }
     }
 
     function cutCall() {
+      isCallActive = false;
+      if (silenceTimer) {
+        clearTimeout(silenceTimer);
+        silenceTimer = null;
+      }
+
       // 1. Immediately terminate all speech synthesis and cancel queue
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -440,16 +569,10 @@
         currentAudio.currentTime = 0;
       }
 
-      // 3. Stop mic recognition if active
-      if (recognition && isRecording) {
-        try { recognition.stop(); } catch(e) {}
-        isRecording = false;
-      }
-      const micBtn = document.getElementById('btn-mic');
-      if (micBtn) {
-        document.getElementById('mic-label').innerText = "Speak via Microphone (Live Voice)";
-        micBtn.className = "w-full py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 transition text-amber-400 font-bold rounded-xl border border-amber-500/30 shadow flex items-center justify-center gap-1.5 text-xs";
-        document.getElementById('mic-indicator').classList.add('hidden');
+      // 3. Stop mic recognition immediately
+      if (recognition) {
+        try { recognition.abort(); } catch(e) {}
+        recognition = null;
       }
 
       // 4. Update LCD Phone Screen to CUT status
@@ -470,8 +593,8 @@
       wave.classList.add('hidden');
       if (speechIndicator) speechIndicator.classList.add('hidden');
 
-      tStatus.innerText = "Call Terminated";
-      tBody.innerText = `Call disconnected. Spoken voice silenced. Press 'CALL HISAAB' or dial '1' to start a new call.`;
+      tStatus.innerText = "Call Cut";
+      tBody.innerText = `Call disconnected. Line cut. Press 'CALL HISAAB' or dial '1' to start a new call.`;
       playAudioChime(330, 0.3);
     }
 
@@ -595,78 +718,11 @@
       executeAuditCall(text);
     }
 
-    function toggleMicrophone() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert("Microphone voice recognition is not supported in this browser. Please use Google Chrome or type your speech in the text box below.");
-        document.getElementById('custom-speech-input').focus();
-        return;
-      }
 
-      const micBtn = document.getElementById('btn-mic');
-      const micLabel = document.getElementById('mic-label');
-      const micIndicator = document.getElementById('mic-indicator');
-      const langSelect = document.getElementById('voice-lang-select');
-      const chosenLang = langSelect ? langSelect.value : 'en';
-
-      if (!isRecording) {
-        recognition = new SpeechRecognition();
-        recognition.lang = chosenLang === 'hi' ? 'hi-IN' : 'en-IN';
-        recognition.interimResults = true;
-        recognition.continuous = false;
-
-        recognition.onstart = () => {
-          isRecording = true;
-          micLabel.innerText = "Listening to your mic...";
-          micBtn.className = "w-full py-2 bg-red-600 hover:bg-red-500 active:scale-95 transition text-white font-bold rounded-xl border border-red-400 shadow flex items-center justify-center gap-1.5 text-xs animate-pulse";
-          micIndicator.classList.remove('hidden');
-          document.getElementById('screen-badge').innerText = "MIC ACTIVE";
-          document.getElementById('screen-badge').className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
-          document.getElementById('screen-main-text').innerText = "Speak into mic...";
-          document.getElementById('screen-sub-text').innerText = "e.g. Sales 1000, milk 200, eggs 150";
-          document.getElementById('audio-wave').classList.remove('hidden');
-          document.getElementById('transcript-status').innerText = "Listening to your voice...";
-        };
-
-        recognition.onresult = (event) => {
-          let interim = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            interim += event.results[i][0].transcript;
-          }
-          document.getElementById('custom-speech-input').value = interim;
-          document.getElementById('screen-sub-text').innerText = `"${interim.slice(0, 30)}..."`;
-          document.getElementById('transcript-body').innerText = `You: "${interim}"`;
-        };
-
-        recognition.onerror = (event) => {
-          console.warn("Speech recognition error:", event.error);
-          isRecording = false;
-          micLabel.innerText = "Speak via Microphone (Live Voice)";
-          micBtn.className = "w-full py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 transition text-amber-400 font-bold rounded-xl border border-amber-500/30 shadow flex items-center justify-center gap-1.5 text-xs";
-          micIndicator.classList.add('hidden');
-        };
-
-        recognition.onend = () => {
-          isRecording = false;
-          micLabel.innerText = "Speak via Microphone (Live Voice)";
-          micBtn.className = "w-full py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 transition text-amber-400 font-bold rounded-xl border border-amber-500/30 shadow flex items-center justify-center gap-1.5 text-xs";
-          micIndicator.classList.add('hidden');
-          const recognizedText = document.getElementById('custom-speech-input').value.trim();
-          if (recognizedText) {
-            executeAuditCall(recognizedText);
-          }
-        };
-
-        recognition.start();
-      } else {
-        if (recognition) {
-          recognition.stop();
-        }
-      }
-    }
 
     async function executeAuditCall(spokenText) {
-      resetCall();
+      if (!isCallActive) return;
+
       const badge = document.getElementById('screen-badge');
       const mainText = document.getElementById('screen-main-text');
       const subText = document.getElementById('screen-sub-text');
@@ -678,17 +734,17 @@
       const langSelect = document.getElementById('voice-lang-select');
       const chosenLang = langSelect ? langSelect.value : 'en';
 
-      badge.innerText = "CALLING...";
+      badge.innerText = "AUDITING... 📊";
       badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-400 uppercase tracking-wider font-bold mb-1";
-      mainText.innerText = "Dialing 1800-HISAAB...";
-      subText.innerText = "Connecting PSTN 8kHz line";
-      footer.innerText = "Temporal Durable Workflow Active";
+      mainText.innerText = "Auditing Ledger...";
+      subText.innerText = "Gemma 2 + TabPFN-3.5";
+      footer.innerText = "Checking 30-day baseline prices...";
+      wave.classList.add('hidden');
 
-      tStatus.innerText = "Call Placed";
-      tBody.innerText = `Dialing daily closing call at 20:30 IST...`;
+      tStatus.innerText = "Auditing Engine Active";
+      tBody.innerText = `Vendor: "${spokenText}"\nSystem: Parsing dialect entities with Gemma 2... Auditing unit prices against historical baseline with TabPFN...`;
 
       try {
-        // Trigger real FastAPI backend simulation with custom speech
         const response = await fetch('/api/call/simulate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -701,26 +757,11 @@
         const apiData = await response.json();
         window.lastAuditSummary = apiData.audit;
 
-        setTimeout(() => {
-          badge.innerText = "IN CALL";
-          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
-          mainText.innerText = "Vendor Speaking...";
-          subText.innerText = `"${spokenText.slice(0, 32)}..."`;
-          wave.classList.remove('hidden');
-
-          tStatus.innerText = "Vendor Voice Transcribed";
-          tBody.innerText = `Vendor: "${spokenText}"`;
-        }, 600);
+        if (!isCallActive) return; // Vendor cut call while network was working
 
         setTimeout(() => {
-          mainText.innerText = "Auditing Ledger...";
-          subText.innerText = "Gemma 2 + TabPFN-3.5";
-          wave.classList.add('hidden');
-          tStatus.innerText = "Auditing Engine Active";
-          tBody.innerText = `System: Parsing dialect entities with Gemma 2... Auditing unit prices against historical baseline with TabPFN...`;
-        }, 1400);
+          if (!isCallActive) return;
 
-        setTimeout(() => {
           const audit = apiData.audit;
           const revenue = audit ? audit.revenue : 0;
           const expenses = audit ? audit.total_expenses : 0;
@@ -800,14 +841,13 @@
             currentAudio = new Audio(apiData.audio_stream_url);
             currentAudio.play().catch(() => {});
           }
-        }, 2000);
+        }, 800);
 
       } catch (err) {
         console.error("Simulation error:", err);
         badge.innerText = "ERROR";
         badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
         mainText.innerText = "Audit Failed";
-        subText.innerText = "Check server connection";
       }
     }
 
@@ -819,14 +859,14 @@
       if (currentAudio) {
         currentAudio.pause();
       }
-      document.getElementById('screen-badge').innerText = "READY";
+      document.getElementById('screen-badge').innerText = "READY TO CALL";
       document.getElementById('screen-badge').className = "inline-block px-2 py-0.5 rounded text-[10px] bg-[#8CE390]/20 text-[#8CE390] uppercase tracking-wider font-bold mb-1";
-      document.getElementById('screen-main-text').innerText = 'Press "Call Hisaab"';
-      document.getElementById('screen-sub-text').innerText = "Speed Dial: 20:30 Daily Closing";
+      document.getElementById('screen-main-text').innerText = 'Press "CALL HISAAB"';
+      document.getElementById('screen-sub-text').innerText = "Speed Dial: 1800-HISAAB (Daily Closing)";
       document.getElementById('screen-footer').innerText = "Temporal Auto-Call Ready";
       document.getElementById('audio-wave').classList.add('hidden');
       document.getElementById('transcript-status').innerText = "Ready to dial...";
-      document.getElementById('transcript-body').innerText = '"Press \'📞 Call Hisaab\' to start call, or speak with \'🎙️ Speak\'."';
+      document.getElementById('transcript-body').innerText = '"Press \'CALL HISAAB\' to place call and speak your hisaab."';
       document.getElementById('metric-revenue').innerText = "₹0.00";
       document.getElementById('metric-expenses').innerText = "₹0.00";
       document.getElementById('metric-profit').innerText = "₹0.00";
