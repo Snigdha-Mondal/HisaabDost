@@ -24,16 +24,16 @@
 - [x] **2.1 Prompt Engineering**: Create few-shot prompt in `app/agent/prompts.py` supporting Indian street slang ("dabba", "liter", "kilo", "galla").
 - [x] **2.2 Gemma 2 Adapter**: Implement `app/agent/gemma_parser.py` using Ollama / HuggingFace / Gemini API fallback.
 - [x] **2.3 Dialect Unit Tests**: Implement `tests/test_gemma_parser.py` with 5 authentic street vendor test audio transcripts.
-- [ ] 🔒 **2.4 Phase 2 Checkpoint**: Review parser accuracy and currency safety.
+- [x] 🔒 **2.4 Phase 2 Checkpoint**: Review parser accuracy and currency safety.
 
 ---
 
 ## Phase 3: TabPFN Price-Gouging Anomaly Engine
 *Exit Goal*: Historical 30-day CSV ledger evaluated; price spikes >8% flagged with warnings.
 
-- [ ] **3.1 Baseline Dataset**: Create `data/sample_history.csv` containing 30 days of tea stall purchase logs.
-- [ ] **3.2 TabPFN Anomaly Detector**: Implement `app/audit/tabpfn_engine.py` to compare new unit prices against moving average.
-- [ ] **3.3 Anomaly Unit Tests**: Implement `tests/test_tabpfn_anomaly.py` verifying oil and milk price spike flags.
+- [x] **3.1 Baseline Dataset**: Create `data/sample_history.csv` containing 30 days of tea stall purchase logs.
+- [x] **3.2 TabPFN Anomaly Detector**: Implement `app/audit/tabpfn_engine.py` to compare new unit prices against moving average.
+- [x] **3.3 Anomaly Unit Tests**: Implement `tests/test_tabpfn_anomaly.py` verifying oil and milk price spike flags.
 - [ ] 🔒 **3.4 Phase 3 Checkpoint**: Verify mathematical calculations (extra rupee overcharge) are 100% accurate.
 
 ---
