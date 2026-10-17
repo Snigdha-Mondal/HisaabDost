@@ -407,8 +407,19 @@
     let currentSpokenSpeech = '';
 
     function startCall() {
-      // If already active, don't restart
-      if (isCallActive) return;
+      // Cancel previous speech/timers and start fresh
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      if (silenceTimer) {
+        clearTimeout(silenceTimer);
+        silenceTimer = null;
+      }
+      if (recognition) {
+        try { recognition.abort(); } catch(e) {}
+        recognition = null;
+      }
+
       isCallActive = true;
       currentSpokenSpeech = '';
 
@@ -443,7 +454,7 @@
       tStatus.innerText = "Dialing 1800-HISAAB...";
       tBody.innerText = `"Connecting daily closing call at 20:30 IST..."`;
 
-      // Phase 2: Call Answers after 650ms, microphone opens automatically
+      // Phase 2: Call Answers after 600ms, microphone opens automatically
       setTimeout(() => {
         if (!isCallActive) return; // User hung up while dialing
 
@@ -452,16 +463,16 @@
         badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
         mainText.innerText = "🎙️ Speak Your Hisaab...";
         subText.innerText = "Listening to your voice...";
-        footer.innerText = "Hisaab will sense when you finish";
+        footer.innerText = "Hisaab will sense when you pause";
         wave.classList.remove('hidden');
 
         tStatus.innerText = "🔴 Line Connected • Microphone Listening";
         tBody.innerText = chosenLang === 'hi'
-          ? '"कॉल जुड़ गई! अपनी आज की बिक्री और ख़र्चे बोलिए (उदा. 'बिक्री 1000 रुपये, दूध 200 और अंडे 150'). हिसाब दोस्त अपने आप वाक्य पूरा होते ही समझ जाएगा।"'
-          : '"Call connected! Speak your sales and expenses into your mic (e.g. \'my sales were 1000 rupees and i bought milk for 200 and eggs for 150\'). Hisaab will sense when you pause."';
+          ? "\"कॉल जुड़ गई! अपनी आज की बिक्री और ख़र्चे बोलिए (उदा. बिक्री 1000 रुपये, दूध 200 और अंडे 150)। हिसाब दोस्त अपने आप समझ जाएगा।\""
+          : "\"Call connected! Speak your sales and expenses into your mic (e.g. 'my sales were 1000 rupees and i bought milk for 200 and eggs for 150'). Hisaab will sense when you pause.\"";
 
         startLiveVoiceRecognition(chosenLang);
-      }, 650);
+      }, 600);
     }
 
     function startLiveVoiceRecognition(chosenLang) {
@@ -469,12 +480,23 @@
       const fallbackText = document.getElementById('custom-speech-input').value.trim() || 
         "my sales were 1000 rupees and i bought milk for 200 and eggs for 150.";
 
+      let auditTriggered = false;
+      function triggerAudit(text) {
+        if (auditTriggered) return;
+        auditTriggered = true;
+        if (silenceTimer) {
+          clearTimeout(silenceTimer);
+          silenceTimer = null;
+        }
+        executeAuditCall(text);
+      }
+
       if (!SpeechRecognition) {
         console.warn("SpeechRecognition API not available in browser. Using prepared text fallback.");
         document.getElementById('transcript-status').innerText = "Using Prepared Dialect (No Browser Mic API)";
         setTimeout(() => {
-          if (isCallActive) executeAuditCall(fallbackText);
-        }, 1500);
+          if (isCallActive) triggerAudit(fallbackText);
+        }, 1200);
         return;
       }
 
@@ -516,33 +538,39 @@
           document.getElementById('screen-sub-text').innerText = "Auditing ledger with TabPFN...";
           document.getElementById('transcript-status').innerText = "⚡ Sentence Complete — Auditing...";
           try { recognition.stop(); } catch(e) {}
+          triggerAudit(currentSpokenSpeech.trim() || fallbackText);
         };
 
         recognition.onerror = (event) => {
           console.warn("SpeechRecognition error:", event.error);
+          if (!currentSpokenSpeech) {
+            document.getElementById('transcript-status').innerText = "Mic unavailable — using input hisaab";
+            triggerAudit(fallbackText);
+          }
         };
 
         recognition.onend = () => {
           if (!isCallActive) return; // Call was cut
           console.log("Recognition closed. Auditing speech:", currentSpokenSpeech);
           const textToAudit = currentSpokenSpeech.trim() || document.getElementById('custom-speech-input').value.trim() || fallbackText;
-          executeAuditCall(textToAudit);
+          triggerAudit(textToAudit);
         };
 
         recognition.start();
 
-        // Safety timer: If vendor stays completely silent for 9s after connecting
+        // Safety timer: If vendor stays completely silent for 4.5s after connecting
         silenceTimer = setTimeout(() => {
           if (isCallActive && !currentSpokenSpeech) {
-            console.log("No speech heard in 9s, auditing with input text.");
+            console.log("No live voice spoken in 4.5s. Auditing with input text.");
             try { recognition.stop(); } catch(e) {}
+            triggerAudit(fallbackText);
           }
-        }, 9000);
+        }, 4500);
 
       } catch (err) {
         console.error("SpeechRecognition initialization failed:", err);
         setTimeout(() => {
-          if (isCallActive) executeAuditCall(fallbackText);
+          if (isCallActive) triggerAudit(fallbackText);
         }, 1000);
       }
     }
@@ -706,6 +734,7 @@
 
     function setScenario(text) {
       document.getElementById('custom-speech-input').value = text;
+      isCallActive = true;
       executeAuditCall(text);
     }
 
@@ -715,13 +744,12 @@
         alert("Please enter or speak your sales and expenses first!");
         return;
       }
+      isCallActive = true;
       executeAuditCall(text);
     }
 
-
-
     async function executeAuditCall(spokenText) {
-      if (!isCallActive) return;
+      isCallActive = true;
 
       const badge = document.getElementById('screen-badge');
       const mainText = document.getElementById('screen-main-text');
