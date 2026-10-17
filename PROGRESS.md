@@ -32,7 +32,7 @@
 | 2026-10-17 | 6.2 Video Demo Script | Authored `docs/demo_walkthrough.md` providing a timestamped 3-minute pitch script and runbook. |
 | 2026-10-17 | 6.3 DEV Challenge Post | Staged publication-ready article in `docs/challenge_submission.md` with DevRelay session embedding tag `{% agent_session ... %}` for `#hf26challenge`. |
 | 2026-10-17 | Documentation & Polish | Created root `README.md` with Mermaid architecture diagram, badges, and quickstart run instructions. |
-| 2026-10-17 | Telephony Controls & Spoken Audio | Unified live speech directly into the green `CALL HISAAB` button. Clicking Call now dials 1800-HISAAB, answers line, immediately captures microphone speech, senses when the speaker finishes their sentence via `onspeechend`, audits prices with TabPFN, and speaks back confirmation aloud. Removed the separate microphone button completely. The red `CUT CALL` button hangs up and cuts the call. |
+| 2026-10-17 | Telephony Controls & Spoken Audio | Unified live speech directly into the green `CALL HISAAB` button. Clicking Call dials 1800-HISAAB, answers line, and captures microphone speech continuously (`continuous = true`). Replaced aggressive native speech cutoff with a 2.5-second trailing silence debounce window so natural pauses mid-sentence do not trigger premature audits. Audits prices with TabPFN and speaks back confirmation aloud. Removed the separate microphone button completely. |
 
 ---
 
