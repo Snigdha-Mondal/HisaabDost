@@ -13,7 +13,7 @@
 
 - [x] **1.1 Project Scaffolding**: Setup `pyproject.toml`, directory tree, `.env.example`, and `.gitignore`.
 - [x] **1.2 Pydantic Financial Schemas**: Implement `ExpenseItem`, `DailyAuditSummary`, and `VendorProfile` in `app/agent/schemas.py`.
-- [ ] **1.3 Mock Telephony CLI Simulator**: Create `scripts/mock_call.py` allowing developers to simulate an 8:30 PM vendor phone call from the terminal.
+- [x] **1.3 Mock Telephony CLI Simulator**: Create `scripts/mock_call.py` allowing developers to simulate an 8:30 PM vendor phone call from the terminal.
 - [ ] 🔒 **1.4 Phase 1 Checkpoint**: Verify mock runner prints structured input/output end-to-end.
 
 ---

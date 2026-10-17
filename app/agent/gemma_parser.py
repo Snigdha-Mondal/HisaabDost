@@ -109,17 +109,32 @@ class GemmaParser:
         pattern_a = r'(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets)?\s+([a-zA-Z\s]+?)\s+(\d+(?:\.\d+)?)\s*(?:ka|ki|ke|rupaye|rs)?'
         
         # Check specific known commodities
-        for raw_phrase, (normalized_name, default_unit) in COMMODITY_MAPPINGS.items():
-            if raw_phrase in text_lower:
-                # Find surrounding numbers for this commodity
-                # e.g. "10 liter doodh liya tha 600 ka"
-                regex = rf'(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket)?\s*(?:of\s+)?{re.escape(raw_phrase)}[^\d]*(\d+(?:\.\d+)?)'
-                match = re.search(regex, text_lower)
+        # Sort keys by length descending to match "sarson ka tel" before "tel"
+        sorted_phrases = sorted(COMMODITY_MAPPINGS.keys(), key=len, reverse=True)
+        
+        for raw_phrase in sorted_phrases:
+            normalized_name, default_unit = COMMODITY_MAPPINGS[raw_phrase]
+            if raw_phrase in text_lower and not any(e.item == normalized_name for e in expenses):
+                # Pattern 1: Quantity + Unit + Item + Cost
+                # e.g., "10 liter doodh 600 ka", "2 dabba sarson ka tel 1900 ka"
+                regex_q_first = rf'(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket)?\s*(?:of\s+)?{re.escape(raw_phrase)}[^\d]*(\d+(?:\.\d+)?)'
                 
-                if match:
-                    qty = float(match.group(1))
-                    unit = match.group(2) or default_unit
-                    # normalize unit name
+                # Pattern 2: Item + Quantity + Unit + Cost
+                # e.g., "doodh liya tha 10 liter 600 ka", "sarson ka tel 2 dabba 1900 ka"
+                regex_item_first = rf'{re.escape(raw_phrase)}[^\d]*(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket)?[^\d]*(\d+(?:\.\d+)?)'
+
+                match_q = re.search(regex_q_first, text_lower)
+                match_i = re.search(regex_item_first, text_lower)
+
+                matched = None
+                if match_q and match_q.group(3) and float(match_q.group(3)) != revenue:
+                    matched = match_q
+                elif match_i and match_i.group(3) and float(match_i.group(3)) != revenue:
+                    matched = match_i
+
+                if matched:
+                    qty = float(matched.group(1))
+                    unit = matched.group(2) or default_unit
                     if unit in ("dabba", "can", "cans"):
                         unit = "cans"
                     elif unit in ("liter", "litres"):
@@ -127,25 +142,21 @@ class GemmaParser:
                     elif unit in ("kilo", "kg"):
                         unit = "kg"
                     
-                    cost = float(match.group(3))
+                    cost = float(matched.group(3))
                     unit_price = cost / qty if qty > 0 else cost
-                    
-                    # Prevent duplicates
-                    if not any(e.item == normalized_name for e in expenses):
-                        expenses.append(ExpenseItem(
-                            item=normalized_name,
-                            raw_name=raw_phrase,
-                            quantity=qty,
-                            unit=unit,
-                            total_cost=cost,
-                            unit_price=round(unit_price, 2)
-                        ))
+                    expenses.append(ExpenseItem(
+                        item=normalized_name,
+                        raw_name=raw_phrase,
+                        quantity=qty,
+                        unit=unit,
+                        total_cost=cost,
+                        unit_price=round(unit_price, 2)
+                    ))
                 else:
-                    # Look for item + cost without explicit quantity (e.g. "sabzi aayi 450 ki")
+                    # Pattern 3: Item + Cost without explicit quantity (e.g., "sabzi aayi thi 450 ki")
                     cost_match = re.search(rf'{re.escape(raw_phrase)}[^\d]*(\d+(?:\.\d+)?)', text_lower)
-                    if cost_match and not any(e.item == normalized_name for e in expenses):
+                    if cost_match:
                         cost = float(cost_match.group(1))
-                        # Avoid taking the revenue as item cost
                         if cost != revenue and cost < 10000:
                             expenses.append(ExpenseItem(
                                 item=normalized_name,
