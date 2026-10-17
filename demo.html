@@ -114,18 +114,18 @@
         </div>
 
         <!-- Call Action Buttons -->
-        <div class="grid grid-cols-2 gap-3 mt-4">
-          <button id="btn-call" onclick="startSimulatedCall()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md">
-            <span>📞</span> Call Hisaab
+        <div class="grid grid-cols-2 gap-2.5 mt-4">
+          <button id="btn-mic" onclick="toggleMicrophone()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md text-xs">
+            <span id="mic-icon">🎙️</span> <span id="mic-label">Speak (Mic)</span>
           </button>
-          <button id="btn-hangup" onclick="resetCall()" class="bg-red-700 hover:bg-red-600 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md">
-            <span>❌</span> End Call
+          <button id="btn-call" onclick="submitCustomInput()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md text-xs">
+            <span>⚡</span> Run Audit
           </button>
         </div>
 
         <!-- Physical Keypad Grid -->
         <div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-800 text-center text-xs font-mono">
-          <button onclick="startSimulatedCall()" class="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-slate-200 py-2 rounded-lg font-bold">1<br><span class="text-[9px] text-slate-400">Hisab</span></button>
+          <button onclick="submitCustomInput()" class="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-slate-200 py-2 rounded-lg font-bold">1<br><span class="text-[9px] text-slate-400">Hisab</span></button>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">2<br><span class="text-[9px]">ABC</span></div>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">3<br><span class="text-[9px]">DEF</span></div>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">4<br><span class="text-[9px]">GHI</span></div>
@@ -135,16 +135,33 @@
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">8<br><span class="text-[9px]">TUV</span></div>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">9<br><span class="text-[9px]">WXYZ</span></div>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">*</div>
-          <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">0</div>
+          <button onclick="resetCall()" class="bg-red-900/40 hover:bg-red-800/60 text-red-300 py-2 rounded-lg font-bold">0<br><span class="text-[9px]">Reset</span></button>
           <div class="bg-slate-800/60 text-slate-400 py-2 rounded-lg">#</div>
         </div>
 
-        <!-- Simulation Control -->
-        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
-          <span>Demo Audio Track:</span>
-          <button onclick="startSimulatedCall()" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 rounded text-white font-medium text-[11px] flex items-center gap-1 shadow">
-            ▶️ Run 10s Demo
-          </button>
+        <!-- Custom Speech Input -->
+        <div class="mt-3 pt-3 border-t border-slate-800 text-xs">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-slate-300 font-semibold flex items-center gap-1">
+              <span>🗣️</span> Your Daily Log (Voice or Text):
+            </span>
+            <span id="mic-indicator" class="text-[10px] text-emerald-400 hidden animate-pulse font-bold">🔴 Listening to your mic...</span>
+          </div>
+          <div class="flex gap-2">
+            <input id="custom-speech-input" type="text" 
+                   value="my sales were 1000 rupees and i bought milk for 200 and eggs for 150."
+                   placeholder="e.g. Sales 1000, milk 200, eggs 150..."
+                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-amber-500 font-sans shadow-inner">
+            <button onclick="submitCustomInput()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold rounded-lg text-xs shrink-0 shadow flex items-center gap-1">
+              ⚡ Audit
+            </button>
+          </div>
+          <div class="flex flex-wrap items-center gap-1 mt-2 text-[10px]">
+            <span class="text-slate-400">Quick Try:</span>
+            <button onclick="setScenario('my sales were 1000 rupees and i bought milk for 200 and eggs for 150.')" class="px-2 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-medium">Milk 200 & Eggs 150</button>
+            <button onclick="setScenario('Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai.')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium">Oil Gouging (Sharmaji)</button>
+            <button onclick="setScenario('Subah chai patti 320 ki aayi aur cheeni 220 ki. Total collection 3800 rupaye.')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium">Tea Stall (Normal)</button>
+          </div>
         </div>
       </div>
 
@@ -208,12 +225,12 @@
                 <h3 class="text-sm font-bold text-red-400">
                   TabPFN Anomaly: Wholesale Price Gouging Detected!
                 </h3>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-red-600 text-white font-bold">+11.7% SPIKE</span>
+                <span id="gouging-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-red-600 text-white font-bold">+11.7% SPIKE</span>
               </div>
-              <p class="text-xs text-slate-200 mt-1">
+              <p id="gouging-desc" class="text-xs text-slate-200 mt-1">
                 <strong>Mustard Oil (सरसों का तेल):</strong> Charged <strong>₹950.00 / can</strong> today. Historical 30-day baseline is <strong>₹850.00</strong>.
               </p>
-              <p class="text-xs text-red-300 font-medium mt-0.5">
+              <p id="gouging-extra" class="text-xs text-red-300 font-medium mt-0.5">
                 Overcharged amount: <strong>₹200.00 extra</strong> across 2 cans.
               </p>
             </div>
@@ -224,8 +241,8 @@
         </div>
 
         <div class="mt-3 pt-3 border-t border-red-500/20 flex items-center justify-between text-xs text-slate-400">
-          <span>30-Day Moving Baseline: ₹850</span>
-          <span class="text-red-400 font-bold font-mono">Today: ₹950 ↑</span>
+          <span id="gouging-baseline-foot">30-Day Moving Baseline: ₹850</span>
+          <span id="gouging-today-foot" class="text-red-400 font-bold font-mono">Today: ₹950 ↑</span>
         </div>
       </div>
 
@@ -316,7 +333,94 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    async function startSimulatedCall() {
+    let recognition = null;
+    let isRecording = false;
+
+    function setScenario(text) {
+      document.getElementById('custom-speech-input').value = text;
+      executeAuditCall(text);
+    }
+
+    function submitCustomInput() {
+      const text = document.getElementById('custom-speech-input').value.trim();
+      if (!text) {
+        alert("Please enter or speak your sales and expenses first!");
+        return;
+      }
+      executeAuditCall(text);
+    }
+
+    function toggleMicrophone() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Microphone voice recognition is not supported in this browser. Please use Google Chrome or type your speech in the text box below.");
+        document.getElementById('custom-speech-input').focus();
+        return;
+      }
+
+      const micBtn = document.getElementById('btn-mic');
+      const micLabel = document.getElementById('mic-label');
+      const micIndicator = document.getElementById('mic-indicator');
+      const langSelect = document.getElementById('voice-lang-select');
+      const chosenLang = langSelect ? langSelect.value : 'en';
+
+      if (!isRecording) {
+        recognition = new SpeechRecognition();
+        recognition.lang = chosenLang === 'hi' ? 'hi-IN' : 'en-IN';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+
+        recognition.onstart = () => {
+          isRecording = true;
+          micLabel.innerText = "Listening...";
+          micBtn.className = "bg-red-600 hover:bg-red-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md text-xs animate-pulse";
+          micIndicator.classList.remove('hidden');
+          document.getElementById('screen-badge').innerText = "MIC ACTIVE";
+          document.getElementById('screen-badge').className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
+          document.getElementById('screen-main-text').innerText = "Speak into mic...";
+          document.getElementById('screen-sub-text').innerText = "e.g. Sales 1000, milk 200, eggs 150";
+          document.getElementById('audio-wave').classList.remove('hidden');
+          document.getElementById('transcript-status').innerText = "Listening to your voice...";
+        };
+
+        recognition.onresult = (event) => {
+          let interim = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            interim += event.results[i][0].transcript;
+          }
+          document.getElementById('custom-speech-input').value = interim;
+          document.getElementById('screen-sub-text').innerText = `"${interim.slice(0, 30)}..."`;
+          document.getElementById('transcript-body').innerText = `You: "${interim}"`;
+        };
+
+        recognition.onerror = (event) => {
+          console.warn("Speech recognition error:", event.error);
+          isRecording = false;
+          micLabel.innerText = "Speak (Mic)";
+          micBtn.className = "bg-amber-600 hover:bg-amber-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md text-xs";
+          micIndicator.classList.add('hidden');
+        };
+
+        recognition.onend = () => {
+          isRecording = false;
+          micLabel.innerText = "Speak (Mic)";
+          micBtn.className = "bg-amber-600 hover:bg-amber-500 active:scale-95 transition text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-md text-xs";
+          micIndicator.classList.add('hidden');
+          const recognizedText = document.getElementById('custom-speech-input').value.trim();
+          if (recognizedText) {
+            executeAuditCall(recognizedText);
+          }
+        };
+
+        recognition.start();
+      } else {
+        if (recognition) {
+          recognition.stop();
+        }
+      }
+    }
+
+    async function executeAuditCall(spokenText) {
       resetCall();
       const badge = document.getElementById('screen-badge');
       const mainText = document.getElementById('screen-main-text');
@@ -326,104 +430,133 @@
       const tStatus = document.getElementById('transcript-status');
       const tBody = document.getElementById('transcript-body');
 
+      const langSelect = document.getElementById('voice-lang-select');
+      const chosenLang = langSelect ? langSelect.value : 'en';
+
       badge.innerText = "CONNECTING";
       badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-400 uppercase tracking-wider font-bold mb-1";
-      mainText.innerText = "Dialing 1800-HISAAB...";
-      subText.innerText = "Twilio Voice Webhook";
-      footer.innerText = "Temporal Workflow Triggered";
+      mainText.innerText = "Connecting Call...";
+      subText.innerText = "PSTN 8kHz Gateway";
+      footer.innerText = "Temporal Durable Workflow Triggered";
+
+      tStatus.innerText = "Call Initiated";
+      tBody.innerText = `Connecting vendor call at 20:30 IST...`;
 
       try {
-        const langSelect = document.getElementById('voice-lang-select');
-        const chosenLang = langSelect ? langSelect.value : 'en';
-
-        // Trigger real FastAPI backend simulation
-        const apiPromise = fetch('/api/call/simulate', {
+        // Trigger real FastAPI backend simulation with custom speech
+        const response = await fetch('/api/call/simulate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ transcript_id: 'sharmaji_closing_gouging', language: chosenLang })
-        }).then(r => r.ok ? r.json() : null).catch(() => null);
+          body: JSON.stringify({ 
+            custom_speech: spokenText, 
+            language: chosenLang 
+          })
+        });
+
+        const apiData = await response.json();
 
         setTimeout(() => {
           badge.innerText = "CONNECTED";
           badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
-          mainText.innerText = "ElevenLabs Voice";
-          subText.innerText = chosenLang === 'hi' ? '"नमस्ते शर्माजी! आज का हिसाब?"' : '"Namaste Uncle! Today\'s sales?"';
+          mainText.innerText = "Call Connected";
+          subText.innerText = `"${spokenText.slice(0, 32)}..."`;
           wave.classList.remove('hidden');
-          tStatus.innerText = `Agent Speaking (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
-          tBody.innerText = chosenLang === 'hi'
-            ? 'Agent: "नमस्ते शर्माजी! दुकान बंद करने का समय हो गया। आज क्या ख़रीदा और कुल कितनी बिक्री हुई?"'
-            : 'Agent: "Namaste Uncle, closing time! What supplies did you buy today, and what were your cash sales?"';
-        }, 1200);
+
+          tStatus.innerText = "Vendor Voice Input Transcribed";
+          tBody.innerText = `Vendor: "${spokenText}"`;
+        }, 600);
 
         setTimeout(() => {
-          mainText.innerText = "Vendor Speaking...";
-          subText.innerText = '"10L doodh, 2 tel, sabzi..."';
-          tStatus.innerText = "Vendor Voice Input (Hinglish/English)";
-          tBody.innerText = 'Uncle: "Maine 10 liter doodh 600 ka liya, 2 dabba sarson tel 1900 ka, aur sabzi 450 ki. Total galla 4200 hai."';
-        }, 3000);
-
-        setTimeout(async () => {
           mainText.innerText = "Gemma 2 + TabPFN";
-          subText.innerText = "Auditing unit prices...";
+          subText.innerText = "Auditing line items...";
           wave.classList.add('hidden');
           tStatus.innerText = "Auditing Engine Active";
-          tBody.innerText = 'System: Extracting line items with Gemma 2... Running TabPFN tabular anomaly scan against 30-day baseline...';
+          tBody.innerText = `System: Parsing dialect entities with Gemma 2... Auditing unit prices against historical moving baseline with TabPFN...`;
+        }, 1500);
 
-          const apiData = await apiPromise;
+        setTimeout(() => {
+          const audit = apiData.audit;
+          const revenue = audit ? audit.revenue : 0;
+          const expenses = audit ? audit.total_expenses : 0;
+          const profit = audit ? audit.net_profit : 0;
+          const margin = audit ? audit.profit_margin_pct : 0;
+          const alerts = audit ? audit.gouging_alerts : [];
 
-          setTimeout(() => {
-            badge.innerText = "AUDIT COMPLETE";
-            badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
-            mainText.innerText = "Profit: ₹1,250";
-            subText.innerText = "⚠️ Oil ₹100 extra/can!";
-            footer.innerText = "Call Complete • Data Saved";
-            wave.classList.remove('hidden');
+          const hasAlert = alerts && alerts.length > 0;
+          badge.innerText = hasAlert ? "AUDIT ALERT" : "AUDIT CLEAN";
+          badge.className = hasAlert 
+            ? "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1"
+            : "inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 uppercase tracking-wider font-bold mb-1";
 
-            tStatus.innerText = `Spoken Agent Feedback (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
-            tBody.innerText = chosenLang === 'hi'
-              ? (apiData?.audit?.spoken_confirmation_hi || 'Agent (ElevenLabs): "नमस्ते शर्माजी, सब दर्ज हो गया। आज का मुनाफ़ा ₹1,250 है। चेतावनी: सरसों के तेल पर ₹200 ज़्यादा लिए गए।"')
-              : (apiData?.audit?.spoken_confirmation_en || 'Agent (ElevenLabs): "Recorded Uncle! Today\'s net profit is ₹1,250. But warning: your oil supplier charged ₹950 per can today. Baseline is ₹850. They charged you ₹200 extra."');
+          mainText.innerText = `Profit: ₹${profit.toLocaleString('en-IN')}`;
+          subText.innerText = hasAlert 
+            ? `⚠️ ${alerts[0].item.toUpperCase()} ₹${alerts[0].extra_cost.toFixed(0)} extra!`
+            : `✅ Normal Baseline Prices`;
+          footer.innerText = "Call Completed • Saved to Ledger";
+          wave.classList.remove('hidden');
 
-            const audit = apiData?.audit;
-            const revenue = audit ? audit.revenue : 4200;
-            const expenses = audit ? audit.total_expenses : 2950;
-            const profit = audit ? audit.net_profit : 1250;
-            const margin = audit ? audit.profit_margin_pct : 29.8;
+          tStatus.innerText = `Spoken Feedback (${chosenLang === 'hi' ? 'Hindi' : 'English'})`;
+          tBody.innerText = chosenLang === 'hi'
+            ? (audit.spoken_confirmation_hi || `नमस्ते, आज का मुनाफ़ा ₹${profit.toLocaleString('en-IN')} है।`)
+            : (audit.spoken_confirmation_en || `Recorded! Today's sales were ₹${revenue.toLocaleString('en-IN')}, leaving ₹${profit.toLocaleString('en-IN')} profit.`);
 
-            document.getElementById('metric-revenue').innerText = `₹${revenue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById('metric-expenses').innerText = `₹${expenses.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById('metric-profit').innerText = `₹${profit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById('metric-margin').innerText = `Margin: ${margin}% (Healthy)`;
+          // Update Financial Metric Cards
+          document.getElementById('metric-revenue').innerText = `₹${revenue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+          document.getElementById('metric-expenses').innerText = `₹${expenses.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+          document.getElementById('metric-profit').innerText = `₹${profit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+          document.getElementById('metric-margin').innerText = `Margin: ${margin}% (${profit >= 0 ? 'Healthy' : 'Deficit'})`;
 
-            document.getElementById('gouging-alert-card').classList.remove('hidden');
+          // Update TabPFN Gouging Alert Banner
+          const alertCard = document.getElementById('gouging-alert-card');
+          if (hasAlert) {
+            const firstAlert = alerts[0];
+            document.getElementById('gouging-badge').innerText = `+${firstAlert.pct_increase.toFixed(1)}% SPIKE`;
+            document.getElementById('gouging-desc').innerHTML = `<strong>${firstAlert.item.toUpperCase()} (${firstAlert.raw_name || firstAlert.item}):</strong> Charged <strong>₹${firstAlert.current_price.toFixed(2)}</strong> today. Historical 30-day baseline is <strong>₹${firstAlert.baseline_price.toFixed(2)}</strong>.`;
+            document.getElementById('gouging-extra').innerHTML = `Overcharged amount: <strong>₹${firstAlert.extra_cost.toFixed(2)} extra</strong>.`;
+            document.getElementById('gouging-baseline-foot').innerText = `30-Day Moving Baseline: ₹${firstAlert.baseline_price.toFixed(2)}`;
+            document.getElementById('gouging-today-foot').innerText = `Today: ₹${firstAlert.current_price.toFixed(2)} ↑`;
+            alertCard.classList.remove('hidden');
+          } else {
+            alertCard.classList.add('hidden');
+          }
 
-            if (audit && audit.expenses && audit.expenses.length > 0) {
-              document.getElementById('expense-table-body').innerHTML = audit.expenses.map(exp => {
-                const isGouged = audit.gouging_alerts && audit.gouging_alerts.some(g => g.item.toLowerCase() === exp.item.toLowerCase());
-                return `
-                  <tr class="hover:bg-slate-700/50 ${isGouged ? 'bg-red-500/5' : ''} transition">
-                    <td class="py-2.5 font-medium ${isGouged ? 'text-red-400' : ''}">${exp.item.toUpperCase()} (${exp.raw_name})</td>
-                    <td class="py-2.5 text-right font-mono">${exp.quantity} ${exp.unit}</td>
-                    <td class="py-2.5 text-right font-mono ${isGouged ? 'text-red-400 font-bold' : ''}">₹${exp.unit_price.toFixed(2)}</td>
-                    <td class="py-2.5 text-right font-mono font-bold ${isGouged ? 'text-red-400' : ''}">₹${exp.total_cost.toFixed(2)}</td>
-                    <td class="py-2.5 text-center">
-                      ${isGouged ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500 text-white font-bold animate-pulse">+11.8% Spike</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold">Normal</span>'}
-                    </td>
-                  </tr>
-                `;
-              }).join('');
-            }
+          // Populate Itemized Expense Table
+          if (audit && audit.expenses && audit.expenses.length > 0) {
+            document.getElementById('expense-table-body').innerHTML = audit.expenses.map(exp => {
+              const isGouged = alerts && alerts.some(g => g.item.toLowerCase() === exp.item.toLowerCase());
+              return `
+                <tr class="hover:bg-slate-700/50 ${isGouged ? 'bg-red-500/10' : ''} transition">
+                  <td class="py-2.5 font-medium ${isGouged ? 'text-red-400 font-bold' : ''}">${exp.item.toUpperCase()} (${exp.raw_name})</td>
+                  <td class="py-2.5 text-right font-mono">${exp.quantity} ${exp.unit}</td>
+                  <td class="py-2.5 text-right font-mono ${isGouged ? 'text-red-400 font-bold' : ''}">₹${exp.unit_price.toFixed(2)}</td>
+                  <td class="py-2.5 text-right font-mono font-bold ${isGouged ? 'text-red-400 font-bold' : ''}">₹${exp.total_cost.toFixed(2)}</td>
+                  <td class="py-2.5 text-center">
+                    ${isGouged ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-600 text-white font-bold animate-pulse">Price Spike ⚠️</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Normal</span>'}
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          } else {
+            document.getElementById('expense-table-body').innerHTML = `
+              <tr class="text-slate-400">
+                <td colspan="5" class="py-4 text-center italic">No direct operational expenses detected in spoken dialogue.</td>
+              </tr>
+            `;
+          }
 
-            // Play audio response if available
-            if (apiData && apiData.audio_stream_url) {
-              const audio = new Audio(apiData.audio_stream_url);
-              audio.play().catch(() => {});
-            }
-          }, 1500);
-        }, 5000);
+          // Play Audio Response
+          if (apiData && apiData.audio_stream_url) {
+            const audio = new Audio(apiData.audio_stream_url);
+            audio.play().catch(() => {});
+          }
+        }, 2200);
 
       } catch (err) {
-        console.warn("Simulation error, falling back to local timer", err);
+        console.error("Simulation error:", err);
+        badge.innerText = "ERROR";
+        badge.className = "inline-block px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-400 uppercase tracking-wider font-bold mb-1";
+        mainText.innerText = "Audit Failed";
+        subText.innerText = "Check server connection";
       }
     }
 

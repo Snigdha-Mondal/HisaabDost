@@ -58,7 +58,17 @@ COMMODITY_MAPPINGS = {
     "cylinder": ("commercial gas", "cylinder"),
     "gas": ("commercial gas", "cylinder"),
     "thele ka bhada": ("cart rent", "day"),
-    "bhada": ("transport rent", "trip")
+    "bhada": ("transport rent", "trip"),
+    # Eggs & Bakery
+    "eggs": ("eggs", "tray"),
+    "egg": ("eggs", "tray"),
+    "ande": ("eggs", "tray"),
+    "anda": ("eggs", "tray"),
+    "bread": ("bread", "packets"),
+    "bun": ("bun", "packets"),
+    "buns": ("bun", "packets"),
+    "pav": ("pav", "packets"),
+    "paav": ("pav", "packets")
 }
 
 COLLOQUIAL_QUANTITIES = {
@@ -189,10 +199,11 @@ class GemmaParser:
                         break
 
                 # Pattern A: Quantity + Unit + Item + Cost ("10 liter doodh 600 ka", "2 dabba sarson ka tel 1900 ka")
-                regex_q_first = rf'(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket|cylinder)?\s*(?:of\s+)?\b{re.escape(raw_phrase)}\b[^\d]*(\d+(?:\.\d+)?)'
+                regex_q_first = rf'(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket|cylinder|tray|dozens?)?\s*(?:of\s+)?\b{re.escape(raw_phrase)}\b[^\d]*?(\d+(?:\.\d+)?)'
 
                 # Pattern B: Item + Quantity + Unit + Cost ("doodh liya tha 10 liter 600 ka")
-                regex_item_first = rf'\b{re.escape(raw_phrase)}\b[^\d]*(\d+(?:\.\d+)?)\s*(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket|cylinder)?[^\d]*(\d+(?:\.\d+)?)'
+                # Unit is required so item doesn't eat the next commodity
+                regex_item_first = rf'\b{re.escape(raw_phrase)}\b[^\d,;.]*?(\d+(?:\.\d+)?)\s+(liter|litres|kilo|kg|dabba|can|cans|crate|peti|packet|packets|basket|cylinder|tray|dozens?)\b[^\d,;.]*?(\d+(?:\.\d+)?)'
 
                 match_q = re.search(regex_q_first, clean_text)
                 match_i = re.search(regex_item_first, clean_text)
@@ -217,6 +228,8 @@ class GemmaParser:
                         unit = "crates"
                     elif unit in ("cylinder",):
                         unit = "cylinder"
+                    elif unit in ("tray", "dozens", "dozen"):
+                        unit = "tray"
 
                     cost = float(matched.group(3))
                     unit_price = cost / qty if qty > 0 else cost
@@ -232,8 +245,8 @@ class GemmaParser:
                     start_pos, end_pos = matched.span()
                     clean_text = clean_text[:start_pos] + (" " * (end_pos - start_pos)) + clean_text[end_pos:]
                 else:
-                    # Pattern C: Item + Cost without explicit quantity (e.g. "sabzi aayi 450 ki", "barf 150 ki")
-                    cost_match = re.search(rf'\b{re.escape(raw_phrase)}\b[^\d]*(\d+(?:\.\d+)?)', clean_text)
+                    # Pattern C: Item + Cost without explicit quantity (e.g. "sabzi aayi 450 ki", "barf 150 ki", "milk for 200", "eggs for 150")
+                    cost_match = re.search(rf'\b{re.escape(raw_phrase)}\b[^\d,;.]*?(\d+(?:\.\d+)?)', clean_text)
                     if cost_match:
                         cost = float(cost_match.group(1))
                         if cost != revenue and cost < 15000:
